@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Performative Translator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"> 
+<style>
+  
+/* The code above gets the font required and fits the website to a given device's screen
+    These are names for the different colours used in our website's code */
+    
+:root {
+  --bg:        #0b0b0f;
+  --surface:   #13131a;
+  --surface2:  #1b1b25;
+  --surface3:  #22222f;
+  --border:    #28283a;
+  --border2:   #35354a;
+  --accent:    #f2e255;
+  --accent-h:  #ffe93d;
+  --accent2:   #5ec4f5;
+  --accent3:   #b36dff;
+  --text:      #eaeaf5;
+  --text2:     #a0a0c0;
+  --muted:     #606080;
+  --card:      #181820;
+  --radius:    18px;
+  --shadow:    0 32px 80px rgba(0,0,0,.6);
+}
+
+
+/* USED ARTIFICIAL INTELLIGENCE FOR THIS Global CSS*/
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{ 
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:48px 20px 100px;
+  /* subtle noise texture - Claude */
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/*header*/
+header{text-align:center;margin-bottom:52px;position:relative}
+.logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  letter-spacing:-2px;
+  line-height:1;
+  position:relative;
+  display:inline-block;
+}
+.logo .word-parody{color:var(--text)} /* sets the website title */
+.logo .word-trans{color:var(--accent)}
+
+/* used AI to stylize */
+.logo-dot{
+  display:inline-block;
+  width:8px;height:8px;
+  background:var(--accent3);
+  border-radius:50%;
+  margin-left:4px;
+  vertical-align:super;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+.tagline{
+  color:var(--muted);
+  font-size:.92rem;
+  margin-top:10px;
+  letter-spacing:.01em;
+  font-weight:300;
+}
+.header-chips{
+  display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;
+}
+.hchip{
+  font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;border:1px solid var(--border2);
+  color:var(--muted);
+}
+.hchip.li{border-color:#0a66c2;color:#0a66c2}
+.hchip.dc{border-color:#5865f2;color:#5865f2}
+.hchip.rd{border-color:#ff4500;color:#ff4500}  /* linkedin, discord and reddit colors */
+
+
+/*main card*/
+.main-card{
+  max-width:780px;
+  margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+/*top glow line */
+.main-card::before{
+  content:'';
+  position:absolute;top:0;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.5;
+}
+
+/*inputs box*/
+.input-section{padding:30px 30px 22px}
+.controls{
+  display:flex;gap:10px;margin-bottom:16px;
+  align-items:center;flex-wrap:wrap;
+}
+.pill-label{
+  font-family:'Syne',sans-serif;
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.arrow-icon{color:var(--accent);font-size:1.1rem;flex-shrink:0;margin:0 2px}
+/* Used ai for better visuals*/
+select{
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:.88rem;
+  padding:9px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  outline:none;
+  transition:border-color .2s,background .2s;
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23606080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  padding-right:32px;
+}
+select:focus{border-color:var(--accent);background-color:var(--surface3)}
+.textarea-wrap{position:relative}
+textarea{
+  width:100%;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:12px;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:1rem;
+  font-weight:300;
+  line-height:1.65;
+  padding:16px 18px;
+  resize:vertical;
+  min-height:116px;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+textarea::placeholder{color:var(--muted)}
+textarea:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(242,226,85,.08);
+}
+.char-count{
+  position:absolute;bottom:10px;right:14px;
+  font-size:.7rem;color:var(--muted);
+  pointer-events:none;
+}
+.btn-row{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-top:14px;
+}
+.shortcut-hint{font-size:.72rem;color:var(--muted)}
+kbd{
+  background:var(--surface3);border:1px solid var(--border2);
+  border-radius:4px;padding:1px 5px;font-size:.68rem;
+  font-family:monospace;color:var(--text2);
+}
+/* translate button */
+.translate-btn{
+  background:var(--accent);
+  color:#111;
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:.95rem;
+  letter-spacing:.02em;
+  border:none;
+  padding:13px 30px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:transform .15s,box-shadow .2s,background .15s;
+  position:relative;
+  overflow:hidden;
+}
+.translate-btn::after{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(255,255,255,.15);
+  opacity:0;
+  transition:opacity .15s;
+}
+.translate-btn:hover{
+  background:var(--accent-h);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(242,226,85,.3);
+}
+.translate-btn:hover::after{opacity:1}
+.translate-btn:active{transform:translateY(0);box-shadow:none}
+.translate-btn.loading{pointer-events:none;opacity:.7}
+
+/* Feed history and past prompts */
+.feed-section{
+  border-top:1px solid var(--border);
+  padding:28px 28px 8px;
+}
+.feed-empty{
+  text-align:center;color:var(--muted);
+  font-size:.9rem;padding:48px 0 40px;
+  line-height:2;
+}
+.feed-empty .big-icon{font-size:2.4rem;display:block;margin-bottom:10px;opacity:.5}
+.feed-empty strong{color:var(--text2);font-weight:500}
+
+.post-entry{
+  animation:slideIn .38s cubic-bezier(.22,1,.36,1) both;
+  margin-bottom:30px;
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(-20px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/*platform badge*/
+.platform-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'Syne',sans-serif;
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:10px;
+}
+.badge-linkedin{background:#0a66c2;color:#fff}
+.badge-discord {background:#5865f2;color:#fff}
+.badge-reddit  {background:#ff4500;color:#fff}
+
+/* post button  */
+.post-actions{
+  display:flex;gap:8px;margin-top:10px;
+  justify-content:flex-end;align-items:center;
+}
+.post-btn{
+  background:transparent;
+  border:1px solid var(--border2);
+  color:var(--muted);
+  font-family:'DM Sans',sans-serif;
+  font-size:.76rem;
+  padding:6px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:border-color .15s,color .15s,background .15s,transform .1s;
+}
+.post-btn:hover{border-color:var(--accent);color:var(--accent)}
+.post-btn:active{transform:scale(.96)}
+.post-btn.copied{border-color:#4caf50;color:#4caf50}
+
+/* tries to replicate the LinkedIN looks*/
+.li-card{
+  background:#fff;border-radius:12px;overflow:hidden;
+  font-family:-apple-system,'Segoe UI',Roboto,sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);color:#1a1a1a;
+}
+.li-header{display:flex;align-items:flex-start;gap:12px;padding:16px 16px 0}
+.li-avatar{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.25rem;font-weight:700;color:#fff;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.3);
+}
+.li-name{font-weight:700;font-size:.93rem;color:rgba(0,0,0,.9);line-height:1.3}
+.li-name:hover{text-decoration:underline;cursor:pointer;color:#0a66c2}
+.li-headline{font-size:.78rem;color:rgba(0,0,0,.55);line-height:1.5;margin-top:1px}
+.li-time{font-size:.7rem;color:rgba(0,0,0,.45);margin-top:2px;display:flex;align-items:center;gap:4px}
+.li-follow-btn{
+  margin-left:auto;font-size:.82rem;font-weight:600;
+  color:#0a66c2;border:1px solid #0a66c2;
+  background:transparent;border-radius:20px;
+  padding:5px 16px;cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:background .15s;
+}
+.li-follow-btn:hover{background:rgba(10,102,194,.08)}
+.li-follow-btn.following{background:#0a66c2;color:#fff}
+.li-body{padding:14px 16px 8px;font-size:.9rem;line-height:1.7;color:rgba(0,0,0,.82)}
+.li-body p{margin-bottom:12px}
+.li-body p:last-child{margin-bottom:0}
+.li-body .li-hashtags{color:#0a66c2;font-size:.85rem;margin-top:8px}
+.li-divider{height:1px;background:#e8e8e8;margin:0 16px}
+.li-react-bar{
+  padding:8px 16px 4px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.li-react-emojis{display:flex;align-items:center;gap:4px;font-size:.8rem;color:rgba(0,0,0,.55)}
+.li-react-emojis .react-icons{display:flex}
+.li-react-emojis .react-icons span{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid #fff;margin-left:-5px;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;
+  background:#e9f2ff;
+}
+.li-react-emojis .react-icons span:first-child{margin-left:0}
+.li-react-count{font-size:.78rem;color:rgba(0,0,0,.55)}
+.li-action-bar{display:flex;padding:2px 4px 8px}
+.li-action{
+  flex:1;text-align:center;font-size:.8rem;color:rgba(0,0,0,.55);
+  font-weight:600;padding:10px 4px;border-radius:6px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:background .15s,color .15s;user-select:none;
+}
+.li-action:hover{background:#f3f2ef;color:rgba(0,0,0,.8)}
+.li-action.liked{color:#0a66c2}
+.li-action.active{color:#0a66c2;background:#e9f2ff}
+.li-action .act-icon{font-size:1rem}
+
+/*Found a resource online that replicated the social media cards for discord*/
+.dc-card{
+  background:#313338;border-radius:12px;padding:0;overflow:hidden;
+  font-family:'gg sans','Noto Sans',system-ui,sans-serif;color:#dbdee1;
+}
+.dc-server-bar{
+  background:#2b2d31;padding:8px 14px;
+  display:flex;align-items:center;gap:8px;
+  font-size:.72rem;color:#80848e;border-bottom:1px solid #232428;
+}
+.dc-server-icon{
+  width:20px;height:20px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;color:#fff;flex-shrink:0;
+}
+.dc-channel{color:#b5bac1;font-weight:600}
+.dc-msg-wrap{padding:16px 16px 8px;display:flex;gap:14px}
+.dc-avatar{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px;
+}
+.dc-msg-body{flex:1;min-width:0}
+.dc-name-row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.dc-username{font-weight:700;font-size:.95rem}
+.dc-role-badge{
+  font-size:.62rem;background:rgba(255,255,255,.1);
+  padding:1px 7px;border-radius:4px;color:#b5bac1;font-weight:600;
+}
+.dc-time{font-size:.68rem;color:#80848e;font-weight:400}
+.dc-content{font-size:.92rem;line-height:1.55;color:#dbdee1;word-break:break-word}
+.dc-content .mention{color:#c9cdfb;background:rgba(88,101,242,.2);border-radius:3px;padding:0 2px}
+.dc-reactions-row{
+  display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 0;
+}
+.dc-reaction{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:4px 10px;font-size:.82rem;cursor:pointer;
+  display:flex;align-items:center;gap:5px;color:#b5bac1;
+  transition:background .15s,border-color .15s;user-select:none; 
+}
+.dc-reaction:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.25)}
+.dc-reaction.reacted{background:rgba(88,101,242,.25);border-color:#5865f2;color:#c9cdfb}
+.dc-reaction .rc{font-size:.78rem;font-weight:600}
+.dc-toolbar{
+  border-top:1px solid #3d3f45;margin:8px 0 0;
+  padding:6px 16px;display:flex;gap:4px;
+}
+.dc-tool{
+  font-size:.75rem;color:#80848e;padding:5px 9px;border-radius:4px;
+  cursor:pointer;transition:background .12s,color .12s;
+  display:flex;align-items:center;gap:4px;
+}
+.dc-tool:hover{background:#404249;color:#dbdee1}
+
+/*replicated the social media cards for Reddit*/
+.rd-card{
+  background:#1a1a1b;border:1px solid #343536;
+  border-radius:4px;overflow:hidden;
+  font-family:-apple-system,'IBM Plex Sans',sans-serif;color:#d7dadc;
+}
+.rd-body-row{display:flex}
+.rd-vote-col{
+  width:42px;background:#161617;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 4px;gap:3px;
+}
+.rd-vote-btn{
+  font-size:1.2rem;cursor:pointer;color:#818384;
+  transition:color .12s,transform .12s;
+  background:transparent;border:none;line-height:1;padding:2px;
+  user-select:none;
+}
+.rd-vote-btn:hover{color:#ff4500;transform:scale(1.15)}
+.rd-vote-btn.upvoted{color:#ff4500}
+.rd-vote-btn.downvoted{color:#7193ff}
+.rd-vote-count{font-size:.78rem;color:#d7dadc;font-weight:700;text-align:center}
+.rd-main{flex:1;padding:10px 12px;min-width:0}
+.rd-meta{font-size:.72rem;color:#818384;margin-bottom:8px;line-height:1.5}
+.rd-meta strong{color:#d7dadc;font-weight:700}
+.rd-meta .rd-sub{color:#d7dadc;font-weight:700}
+.rd-meta .rd-sub:hover{text-decoration:underline;cursor:pointer}
+.rd-title{font-size:1rem;font-weight:700;margin-bottom:10px;line-height:1.4;color:#d7dadc}
+.rd-flair{
+  display:inline-block;background:rgba(255,255,255,.1);
+  border-radius:3px;padding:1px 7px;font-size:.72rem;
+  color:#b5bac1;margin-right:8px;margin-bottom:6px;
+}
+.rd-text{font-size:.88rem;line-height:1.65;color:#c8ccd1}
+.rd-actions{display:flex;gap:2px;margin-top:10px;flex-wrap:wrap}
+.rd-action{
+  font-size:.72rem;color:#818384;font-weight:700;
+  padding:6px 9px;border-radius:2px;cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+  transition:background .12s,color .12s;background:transparent;border:none;
+  user-select:none;
+}
+.rd-action:hover{background:#272729;color:#d7dadc}
+.rd-action.active{color:#ff4500}
+
+/*ai for scrollbar*/
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* toast notification */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1e1e2e;border:1px solid var(--border2);
+  color:var(--text);font-size:.85rem;font-family:'DM Sans',sans-serif;
+  padding:10px 22px;border-radius:10px;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .25s,transform .25s;
+  z-index:9999;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* used some ai for commment section help*/
+.li-comments-section{display:none;background:#f3f2ef;padding:12px 16px 14px;border-top:1px solid #e8e8e8}
+.li-comments-section.open{display:block}
+.li-comp-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.li-comp-avatar{width:32px;height:32px;border-radius:50%;background:#0a66c2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;flex-shrink:0}
+.li-comp-input-wrap{flex:1;display:flex;flex-direction:column;gap:6px}
+.li-comp-input{width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:18px;padding:8px 14px;font-size:.85rem;font-family:inherit;color:#1a1a1a;resize:none;min-height:36px;outline:none;line-height:1.45}
+.li-comp-input:focus{border-color:#0a66c2}
+.li-comp-actions{display:flex;justify-content:flex-end;gap:6px}
+.li-comp-post{background:#0a66c2;color:#fff;border:none;padding:5px 16px;border-radius:16px;font-weight:600;font-size:.76rem;cursor:pointer;opacity:.45;transition:opacity .15s,background .15s}
+.li-comp-post.active{opacity:1}
+.li-comp-post.active:hover{background:#004182}
+.li-c{display:flex;gap:8px;margin-top:10px;animation:slideIn .3s both}
+.li-c-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;color:#fff;flex-shrink:0}
+.li-c-body{flex:1;background:#fff;border-radius:8px;padding:8px 12px;border:1px solid rgba(0,0,0,.06);min-width:0;word-break:break-word}
+.li-c-name{font-weight:600;font-size:.78rem;color:rgba(0,0,0,.9)}
+.li-c-headline{font-size:.7rem;color:rgba(0,0,0,.5);margin-top:1px}
+.li-c-text{font-size:.84rem;color:rgba(0,0,0,.85);margin-top:4px;line-height:1.5}
+.li-c-actions{display:flex;gap:14px;margin-top:6px;align-items:center;padding-left:4px}
+.li-c-act{cursor:pointer;background:none;border:none;font-size:.7rem;color:rgba(0,0,0,.55);font-weight:600;padding:2px 0;display:flex;align-items:center;gap:3px}
+.li-c-act:hover{color:rgba(0,0,0,.85)}
+.li-c-act.liked{color:#0a66c2}
+.li-c-meta{font-size:.66rem;color:rgba(0,0,0,.45);margin-left:auto}
+
+/*Commenting logic for Discord*/
+.dc-emoji-picker{display:none;background:#1e1f22;border:1px solid #111214;border-radius:8px;padding:5px;gap:3px;margin-top:6px;box-shadow:0 4px 16px rgba(0,0,0,.4);flex-wrap:wrap;max-width:240px}
+.dc-emoji-picker.open{display:flex}
+.dc-emoji-picker button{background:transparent;border:none;cursor:pointer;font-size:1.05rem;padding:5px 7px;border-radius:4px;line-height:1}
+.dc-emoji-picker button:hover{background:#404249}
+.dc-replies{margin:6px 0 0;display:none;flex-direction:column;gap:10px}
+.dc-replies.open{display:flex}
+.dc-reply-row{display:flex;gap:12px;padding-top:8px;border-top:1px solid #3d3f45}
+.dc-reply-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.78rem;flex-shrink:0}
+.dc-reply-body{flex:1;min-width:0}
+.dc-reply-name-row{display:flex;align-items:baseline;gap:6px;margin-bottom:2px}
+.dc-reply-name{font-weight:700;font-size:.92rem;color:#5865f2}
+.dc-reply-time{font-size:.66rem;color:#80848e}
+.dc-reply-text{font-size:.9rem;color:#dbdee1;line-height:1.5;word-break:break-word}
+.dc-reply-input-row{display:none;margin-top:10px;gap:8px;padding:10px 0 0;border-top:1px solid #3d3f45}
+.dc-reply-input-row.open{display:flex}
+.dc-reply-input{flex:1;background:#383a40;border:none;border-radius:8px;padding:8px 12px;color:#dbdee1;font-size:.88rem;font-family:inherit;outline:none}
+.dc-reply-input::placeholder{color:#80848e}
+.dc-reply-send{background:#5865f2;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-weight:600;cursor:pointer;font-size:.82rem}
+.dc-reply-send:hover{background:#4752c4}
+.dc-tool.active{background:#404249;color:#dbdee1}
+
+/*Commenting logic for Reddit.*/
+.rd-comment-composer{display:none;margin-top:10px;padding:10px;background:#161617;border-radius:4px;border:1px solid #343536}
+.rd-comment-composer.open{display:block}
+.rd-cc-input{width:100%;background:#1a1a1b;border:1px solid #343536;color:#d7dadc;padding:8px 10px;border-radius:4px;font-family:inherit;font-size:.85rem;min-height:60px;resize:vertical;outline:none}
+.rd-cc-input:focus{border-color:#818384}
+.rd-cc-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.rd-cc-cancel{background:transparent;color:#818384;border:1px solid #343536;cursor:pointer;font-size:.75rem;font-weight:700;padding:5px 14px;border-radius:16px}
+.rd-cc-cancel:hover{background:#272729;color:#d7dadc}
+.rd-cc-post{background:#ff4500;color:#fff;border:none;border-radius:16px;padding:5px 14px;font-weight:700;font-size:.75rem;cursor:pointer;opacity:.5}
+.rd-cc-post.active{opacity:1}
+.rd-cc-post.active:hover{background:#cc3700}
+.rd-c-row{padding:8px 0;border-top:1px solid #272729;animation:slideIn .25s both}
+.rd-c-meta{font-size:.72rem;color:#818384;margin-bottom:3px}
+.rd-c-text{font-size:.85rem;color:#c8ccd1;line-height:1.5;word-break:break-word}
+.rd-c-bar{display:flex;gap:0;align-items:center;margin-top:4px;flex-wrap:wrap}
+.rd-c-vote{display:flex;align-items:center;gap:2px}
+.rd-c-vbtn{background:none;border:none;cursor:pointer;color:#818384;font-size:.85rem;line-height:1;padding:2px 4px;border-radius:2px}
+.rd-c-vbtn:hover{background:#272729;color:#ff4500}
+.rd-c-vbtn.upvoted{color:#ff4500}
+.rd-c-vbtn.downvoted{color:#7193ff}
+.rd-c-vcount{font-size:.7rem;color:#d7dadc;font-weight:700;min-width:18px;text-align:center}
+.rd-c-act{background:none;border:none;color:#818384;font-weight:700;font-size:.7rem;cursor:pointer;padding:4px 8px;border-radius:2px}
+.rd-c-act:hover{background:#272729;color:#d7dadc}
+.rd-c-act.liked{color:#ff4500}
+.rd-c-reply-box{display:none;margin-top:6px}
+.rd-c-reply-box.open{display:block}
+.rd-c-reply-input{width:100%;background:#1a1a1b;border:1px solid #343536;color:#d7dadc;padding:6px;border-radius:4px;font-size:.8rem;font-family:inherit;min-height:40px;outline:none;resize:vertical}
+.rd-c-reply-input:focus{border-color:#818384}
+.rd-c-reply-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:4px}
+.rd-c-reply-post{background:#ff4500;color:#fff;border:none;border-radius:12px;padding:3px 10px;font-size:.7rem;font-weight:700;cursor:pointer}
+.rd-c-reply-cancel{background:transparent;color:#818384;border:none;cursor:pointer;font-size:.7rem;font-weight:700;padding:3px 10px}
+.rd-c-thread{margin-left:14px;border-left:2px solid #343536;padding:6px 0 0 8px;margin-top:6px;animation:slideIn .25s both}
+.rd-c-thread-meta{color:#818384;font-size:.7rem;margin-bottom:2px}
+.rd-c-thread-text{font-size:.8rem;color:#c8ccd1;line-height:1.45;word-break:break-word}
+.rd-action.active-save{color:#ff4500}
+.rd-card.hidden-post{opacity:.4}
+
+
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <span class="word-parody">Performative </span><span class="word-trans">Translator</span><span class="logo-dot"></span>
+  </div>
+  <p class="tagline">By Rithwik, Taran, Ben, and Ivin.</p>
+  <div class="header-chips">
+    <span class="hchip li">LinkedIn</span>
+    <span class="hchip dc">Discord</span>
+    <span class="hchip rd">Reddit</span>
+  </div>
+</header>
+
+<div class="main-card">
+  <div class="input-section">
+    <div class="controls">
+      <span class="pill-label">From</span>
+      <select id="fromLang">
+        <option value="english">&#127760; English</option>
+      </select>
+      <span class="arrow-icon">&#8594;</span>
+      <span class="pill-label">To</span>
+      <select id="toLang">
+        <option value="linkedin">&#128188; LinkedIn</option>
+        <option value="discord">&#127918; Discord</option>
+        <option value="reddit">&#128483; Reddit</option>
+      </select>
+    </div>
+    <div class="textarea-wrap">
+      <textarea id="inputText" placeholder="Type something tuff&#8230; e.g. &quot;I&#39;m a dishwasher at McDonald&#39;s&quot;" maxlength="300" rows="4"></textarea>
+      <span class="char-count" id="charCount">0 / 300</span>
+    </div>
+    <div class="btn-row">
+      <span class="shortcut-hint">Press <kbd>Enter</kbd> to translate</span>
+      <button class="translate-btn" id="translateBtn">Translate &#10022;</button>
+    </div>
+  </div>
+  <div class="feed-section">
+    <div id="feed">
+      <div class="feed-empty" id="emptyState">
+        <span class="big-icon">&#9997;</span>
+        <strong>Nothing translated yet.</strong><br>
+        Type something above and try it out!
+      </div> 
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+ /* UI/UX logic assisted by Artificial Intelligence */ 
+(function(){
+"use strict";
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function randK(n){return n>=1000?(n/1000).toFixed(1)+"k":String(n)}
+function pick(n,a){
+  var out=[],copy=a.slice();
+  for(var i=0;i<Math.min(n,copy.length);i++){
+    var idx=Math.floor(Math.random()*copy.length);
+    out.push(copy.splice(idx,1)[0]);
+  }
+  return out;
+}
+function escH(s){ //used AI to learn about HTML Escaping
+  return String(s)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function showToast(msg){
+  var t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show")},2200);
+}
+
+/*word for word translations that use keywords and switch them with more advanced keywords and generated a with hundreds of different jobs and scenerios */
+var WORD_MAP=[
+  // Multi-word first
+  ["fixed a bug",       "resolved a critical system inefficiency"],
+  ["fixed the bug",     "resolved the system-level defect"],
+  ["failed my interview","engaged in an unsuccessful talent evaluation process"],
+  ["failed an interview","engaged in a challenging talent evaluation process"],
+  ["failed the interview","navigated a difficult talent evaluation process"],
+  ["lost my job",       "found myself at an unexpected career inflection point"],
+  ["got rejected",      "received constructive market feedback"],
+  ["got fired",         "was unexpectedly liberated to pursue new opportunities"],
+  ["got promoted",      "was elevated to a new tier of organizational impact"],
+  ["helped someone",    "created tangible value for a key stakeholder"],
+  ["built something",   "shipped a meaningful deliverable"],
+  ["made a mistake",    "encountered a valuable calibration moment"],
+  ["made money",        "generated meaningful revenue impact"],
+  ["learned something", "expanded my professional knowledge architecture"],
+  ["worked hard",       "deployed sustained high-effort execution"],
+  ["worked late",       "invested discretionary time in delivering results"],
+  ["quit my job",       "made a bold strategic career pivot"],
+  ["left my job",       "transitioned out of a role to pursue broader impact"],
+  ["took a break",      "engaged in intentional recovery and reflection"],
+  ["gave up",           "strategically deprioritized a low-ROI endeavor"],
+  ["messed up",         "encountered an unexpected calibration opportunity"],
+  ["burned out",        "reached a critical inflection point in sustainable output"],
+  // Single-word
+  ["dishwasher",        "underwater ceramic sanitation specialist"],
+  ["janitor",           "facility optimization and sanitation engineer"],
+  ["waiter",            "hospitality experience curator"],
+  ["waitress",          "hospitality experience curator"],
+  ["cashier",           "point-of-sale transaction facilitator"],
+  ["security guard",    "access control and perimeter integrity specialist"],
+  ["delivery driver",   "last-mile logistics execution specialist"],
+  ["intern",            "emerging professional contributor"],
+  ["student",           "aspiring industry practitioner"],
+  ["unemployed",        "actively navigating a strategic career transition"],
+  ["promoted",          "elevated to a new scope of organizational impact"],
+  ["launched",          "successfully brought to market"],
+  ["teamwork",          "cross-functional collaborative alignment"],
+  ["boss",              "organizational champion"],
+  ["manager",           "accountability partner and strategic lead"],
+  ["meeting",           "strategic alignment session"],
+  ["email",             "asynchronous communication touchpoint"],
+  ["deadline",          "delivery commitment window"],
+  ["problem",           "opportunity for innovative resolution"],
+  ["idea",              "nascent solution hypothesis"],
+  ["stressed",          "operating under elevated performance pressure"],
+  ["tired",             "running on sustained momentum and caffeine"],
+  ["happy",             "experiencing measurable life-satisfaction metrics"],
+  ["excited",           "energized by the possibilities ahead"],
+  ["scared",            "leaning into discomfort as a growth catalyst"],
+  ["confused",          "navigating a landscape of strategic ambiguity"],
+  ["nervous",           "channeling productive performance anxiety"],
+  ["angry",             "experiencing a heightened emotional calibration event"],
+  ["sad",               "processing a meaningful emotional data point"],
+  ["failed",            "experienced a pivotal learning moment"],
+  ["fired",             "was unexpectedly freed to pursue new opportunities"],
+  ["quit",              "made a strategic career pivot"],
+  ["broke",             "operating within a capital-constrained framework"],
+  // Positive situations
+  ["got a raise",       "received a compensation alignment to market value"],
+  ["got a bonus",       "was awarded a performance-based financial incentive"],
+  ["closed a deal",     "successfully converted a high-value pipeline opportunity"],
+  ["hit my goals",      "achieved full KPI saturation across all verticals"],
+  ["exceeded my goals", "delivered a supra-target performance cadence"],
+  ["got a job",         "secured a new value-creation opportunity"],
+  ["started a company", "embarked on a founder-led disruption journey"],
+  ["raised funding",    "unlocked strategic growth capital from aligned partners"],
+  ["went viral",        "achieved unprecedented organic reach amplification"],
+  ["got a client",      "onboarded a high-value strategic stakeholder"],
+  ["made a sale",       "converted a prospect into a revenue-generating partner"],
+  ["finished a project","delivered a milestone-defining body of work"],
+  ["got certified",     "validated my competency through credentialed assessment"],
+  ["graduated",         "completed my formal knowledge acquisition journey"],
+  ["networked",         "expanded my professional value ecosystem"],
+  ["published a post",  "contributed a thought leadership asset to the discourse"],
+  ["gave a speech",     "delivered a high-impact narrative experience"],
+  ["won an award",      "received formal recognition for value-creation excellence"],
+  ["mentored someone",  "invested in the growth trajectory of an emerging talent"],
+  ["got feedback",      "received a personalized performance calibration signal"],
+  ["solved a problem",  "architected a frictionless solution to a complex challenge"],
+  ["shipped a feature", "deployed a user-centric product enhancement to production"],
+  ["exercised",         "invested in my human capital through physical optimization"],
+  ["read a book",       "conducted a deep-dive knowledge acquisition session"],
+  ["took a course",     "upskilled through a structured learning engagement"],
+  ["woke up early",     "maximized my circadian advantage for peak performance"],
+  ["meditated",         "engaged in intentional cognitive defragmentation"],
+  ["journaled",         "conducted a written self-accountability retrospective"],
+  ["made a plan",       "architected a strategic execution roadmap"],
+
+  // Negative situations
+  ["got laid off",      "was strategically decoupled from the organization"],
+  ["got rejected again","received additional market feedback for iterative growth"],
+  ["missed a deadline", "encountered a delivery commitment recalibration event"],
+  ["lost a client",     "experienced a strategic account transition opportunity"],
+  ["lost a deal",       "received valuable pipeline intelligence for future cycles"],
+  ["had a bad day",     "navigated a high-friction operational environment"],
+  ["cried at work",     "experienced an authentic human moment of emotional release"],
+  ["argued with my boss","engaged in a spirited strategic misalignment dialogue"],
+  ["got demoted",       "was repositioned for a more focused impact radius"],
+  ["missed my flight",  "encountered an unexpected schedule optimization opportunity"],
+  ["got ghosted",       "experienced a unilateral communication deprioritization"],
+  ["went bankrupt",     "underwent a comprehensive financial architecture reset"],
+  ["lost my savings",   "experienced a full capital redeployment event"],
+  ["got scammed",       "was the victim of an unsolicited trust exploitation"],
+  ["had surgery",       "underwent a scheduled human infrastructure maintenance event"],
+  ["got sick",          "entered an unplanned recovery and resilience sprint"],
+  ["had a panic attack","experienced an acute autonomic recalibration episode"],
+  ["got divorced",      "completed a long-term partnership restructuring process"],
+  ["went through a breakup","navigated a strategic personal relationship pivot"],
+  ["lost a friend",     "experienced an organic network pruning event"],
+  ["failed a test",     "received granular diagnostic feedback on my knowledge gaps"],
+  ["dropped out",       "made a bold non-linear educational pivot"],
+  ["got in trouble",    "encountered an unexpected accountability moment"],
+  ["made a bad hire",   "gained critical insights into my talent evaluation process"],
+  ["got bad reviews",   "received unfiltered stakeholder sentiment data"],
+  ["lost followers",    "underwent an audience quality optimization event"],
+  ["had a meeting",     "survived another strategic alignment consumption block"],
+  ["did nothing today", "engaged in a passive ideation and subconscious processing day"],
+  ["overslept",         "conducted an extended circadian recovery session"],
+  ["procrastinated",    "prioritized psychological readiness before execution"],
+  ["wasted time",       "invested in exploratory low-structure cognitive bandwidth"],
+
+  // Jobs / roles
+  ["garbage collector", "urban waste stream logistics and diversion specialist"],
+  ["plumber",           "fluid dynamics and infrastructure integrity engineer"],
+  ["electrician",       "power distribution and safety compliance technician"],
+  ["barista",           "artisanal caffeine experience delivery specialist"],
+  ["bartender",         "social lubricant and hospitality experience architect"],
+  ["cook",              "culinary production and nourishment delivery specialist"],
+  ["chef",              "gastronomic experience design and execution lead"],
+  ["teacher",           "knowledge transfer and human potential activation specialist"],
+  ["nurse",             "frontline human wellness optimization practitioner"],
+  ["doctor",            "advanced biological systems diagnostic and repair lead"],
+  ["lawyer",            "adversarial narrative strategy and compliance specialist"],
+  ["accountant",        "numerical integrity and fiscal stewardship practitioner"],
+  ["salesperson",       "revenue pipeline development and conversion specialist"],
+  ["recruiter",         "human capital acquisition and talent pipeline architect"],
+  ["developer",         "digital solution engineering and deployment practitioner"],
+  ["designer",          "visual communication and user experience curator"],
+  ["marketer",          "demand generation and brand narrative amplification lead"],
+  ["influencer",        "organic reach monetization and lifestyle content architect"],
+  ["blogger",           "long-form digital thought leadership content producer"],
+  ["freelancer",        "autonomous multi-client value delivery specialist"],
+  ["entrepreneur",      "founder-mode chaos navigator and vision execution lead"],
+  ["volunteer",         "pro-bono impact contributor and community value generator"],
+  ["retiree",           "post-career legacy optimization and wisdom harvesting phase"],
+  ["stay at home parent","domestic operations lead and human development specialist"],
+
+  // Buzzwords / misc
+  ["presentation",      "stakeholder narrative immersion experience"],
+  ["spreadsheet",       "structured data visualization and insight extraction artifact"],
+  ["coffee",            "cognitive performance enhancement beverage"],
+  ["lunch",             "midday caloric intake and informal networking opportunity"],
+  ["commute",           "daily transitional productivity dead zone"],
+  ["office",            "centralized in-person collaboration facility"],
+  ["remote work",       "distributed asynchronous value-creation modality"],
+  ["side hustle",       "parallel revenue diversification initiative"],
+  ["passion project",   "intrinsically motivated non-monetized impact vehicle"],
+  ["feedback session",  "bi-directional performance recalibration dialogue"],
+  ["team building",     "forced organic culture manufacturing experience"],
+  ["layoffs",           "workforce right-sizing and efficiency optimization event"],
+  ["restructuring",     "organizational architecture reimagination initiative"],
+  ["pivot",             "strategic directional recalibration under market pressure"],
+  ["disruption",        "incumbent model obsolescence acceleration"],
+  ["synergy",           "cross-functional value multiplication through alignment"],
+  ["bandwidth",         "cognitive and temporal resource availability"],
+  ["circle back",       "re-engage on this at a mutually convenient future touchpoint"],
+  ["deep dive",         "comprehensive analytical immersion exercise"],
+  ["low-hanging fruit", "high-yield minimal-effort opportunity capture"],
+  ["move the needle",   "generate measurable directional momentum on key metrics"],
+  ["boiling the ocean", "attempting to solve the entire problem space simultaneously"],
+  ["thought leader",    "self-designated wisdom distribution node"],
+  ["rockstar",          "high-output top-percentile individual contributor"],
+  ["ninja",             "stealthy operational excellence practitioner"],
+  ["guru",              "domain-specific knowledge concentration epicenter"],
+  ["hustle",            "sustained high-cadence discretionary effort deployment"],
+  ["grind",             "relentless iterative execution without adequate recovery"],
+  ["passion",           "intrinsic motivational energy source for sustained output"],
+  ["purpose",           "north-star alignment principle for life-work integration"],
+  ["authentic",         "strategically vulnerable in a brand-aligned manner"],
+  ["transparent",       "selectively forthcoming with narrative-compatible information"],
+  ["grateful",          "experiencing compounding appreciation for my blessings"],
+  ["blessed",           "operating under a favorable confluence of circumstances"],
+  ["humbled",           "performing strategic modesty after a significant win"],
+  // Bodily functions / health TMI
+  ["threw up",          "experienced an involuntary gastric content evacuation event"],
+  ["got food poisoning","underwent an unplanned gut microbiome stress test"],
+  ["had a hangover",    "was experiencing post-celebration recovery optimization"],
+  ["got drunk",         "achieved an elevated state of social lubrication"],
+  ["blacked out",       "entered an unplanned memory consolidation gap period"],
+  ["gained weight",     "expanded my physical footprint during a growth phase"],
+  ["lost weight",       "optimized my human capital asset through mass reduction"],
+  ["skipped the gym",   "strategically deprioritized physical optimization today"],
+  ["ate junk food",     "fueled my system with a non-optimized caloric input"],
+  ["ate fast food",     "leveraged an agile nutrition delivery solution"],
+  ["couldn't sleep",    "conducted an unplanned overnight ideation session"],
+  ["took a nap",        "engaged in a tactical recovery micro-sprint"],
+  ["forgot to eat",     "accidentally implemented an intermittent fasting protocol"],
+  ["wet the bed",       "experienced an overnight liquid containment failure"],
+  ["farted loudly",     "generated an unexpected ambient acoustic disruption"],
+  ["got a sunburn",     "experienced an unprotected UV exposure calibration event"],
+  ["got a cold",        "entered a short-term immune system stress response cycle"],
+  ["had a headache",    "navigated a cranial pressure optimization challenge"],
+  ["pulled a muscle",   "encountered a soft tissue recalibration opportunity"],
+  ["broke a bone",      "experienced a skeletal infrastructure integrity event"],
+
+  // Relationships / dating
+  ["got cheated on",    "discovered my partner had been diversifying their portfolio"],
+  ["cheated on someone","made a misaligned values-based interpersonal decision"],
+  ["went on a date",    "engaged in a one-on-one stakeholder chemistry assessment"],
+  ["got stood up",      "experienced a unilateral meeting cancellation without notice"],
+  ["slid into DMs",     "initiated an unsolicited direct channel outreach"],
+  ["got rejected romantically","received valuable interpersonal market feedback"],
+  ["fell in love",      "identified a long-term personal strategic partner"],
+  ["got married",       "formalized a high-conviction long-term human partnership"],
+  ["got engaged",       "advanced a personal relationship to the next growth stage"],
+  ["had a baby",        "successfully launched a human MVP into the world"],
+  ["had a miscarriage", "experienced a devastating and deeply personal loss"],
+  ["got a divorce",     "executed a legally binding partnership unwinding process"],
+  ["had a one night stand","engaged in a single-session interpersonal collaboration"],
+  ["broke up over text","executed a low-friction asynchronous relationship offboarding"],
+  ["stalked an ex online","conducted unsolicited competitive intelligence research"],
+  ["matched on tinder", "achieved a bilateral interest confirmation on a talent platform"],
+  ["catfished someone", "deployed a fictional personal brand for exploratory purposes"],
+  ["got catfished",     "discovered my counterpart had misrepresented their personal brand"],
+  ["had an argument",   "engaged in a passionate values misalignment dialogue"],
+  ["said i love you first","initiated a high-vulnerability emotional disclosure"],
+
+  // Money / finance
+  ["went into debt",    "leveraged future earnings to fund present operations"],
+  ["maxed out my credit card","achieved full credit utilization efficiency"],
+  ["bought crypto",     "allocated capital to a high-volatility decentralized asset"],
+  ["lost money on crypto","received an expensive blockchain education"],
+  ["got scammed online","encountered a bad-faith digital value extraction attempt"],
+  ["won the lottery",   "achieved a statistically improbable capital acquisition event"],
+  ["gambled",           "engaged in probabilistic capital deployment"],
+  ["lost at gambling",  "received swift and decisive ROI feedback"],
+  ["bought a house",    "acquired a leveraged long-term real estate asset"],
+  ["got evicted",       "experienced an involuntary housing transition"],
+  ["couldn't pay rent", "encountered a short-term liquidity-to-obligations mismatch"],
+  ["filed for bankruptcy","initiated a structured financial liability reset process"],
+  ["invested in stocks", "deployed capital into the public equity markets"],
+  ["panic sold",        "executed an emotion-driven portfolio liquidation event"],
+  ["bought NFTs",       "allocated resources to jpeg-backed digital ownership certificates"],
+  ["got audited",       "received a complimentary government financial review"],
+  ["cheated on taxes",  "implemented an unsanctioned tax optimization strategy"],
+  ["inherited money",   "received an unexpected intergenerational capital transfer"],
+  ["lent money to a friend","deployed capital into a high-default-risk social loan"],
+  ["couldn't afford groceries","encountered a severe consumer spending constraint"],
+
+  // School / education
+  ["cheated on a test", "leveraged external resources during a closed-book assessment"],
+  ["skipped class",     "strategically deprioritized synchronous learning attendance"],
+  ["failed a class",    "received comprehensive negative feedback on my academic output"],
+  ["dropped a class",   "made a strategic course load optimization decision"],
+  ["pulled an all nighter","executed a full circadian cycle productivity override"],
+  ["plagiarized",       "engaged in uncredited intellectual asset appropriation"],
+  ["got expelled",      "was involuntarily offboarded from my academic institution"],
+  ["got suspended",     "received a temporary institutional engagement pause"],
+  ["got detention",     "was assigned mandatory after-hours institutional presence"],
+  ["failed kindergarten","encountered my first pivotal early learning recalibration"],
+  ["got a bad grade",   "received granular academic performance feedback"],
+  ["got straight A's",  "achieved full-spectrum academic KPI saturation"],
+  ["didn't do homework","deprioritized low-urgency asynchronous learning tasks"],
+  ["forgot my homework","experienced a physical deliverable retrieval failure"],
+  ["got a scholarship","secured merit-based educational funding from aligned sponsors"],  ["got into college",  "successfully cleared a highly competitive talent filter"],
+  ["didn't get into college","received directional feedback to explore alternative pathways"],
+  ["studied abroad",    "pursued a geo-diversified knowledge acquisition experience"],
+  ["took an online course","self-directed my upskilling through a digital learning platform"],
+  ["got a bad teacher", "navigated a suboptimal knowledge transfer environment"],
+
+  // Crime / legal
+  ["got arrested",      "entered into an involuntary law enforcement engagement"],
+  ["went to jail",      "completed a court-mandated institutional residency program"],
+  ["got a speeding ticket","received real-time velocity compliance feedback"],
+  ["ran a red light",   "executed an unsanctioned traffic signal override"],
+  ["got a parking ticket","received a stationary vehicle compliance citation"],
+  ["shoplifted",        "engaged in an unsanctioned retail asset acquisition"],
+  ["got sued",          "was invited into a formal legal dispute resolution process"],
+  ["sued someone",      "initiated a legal accountability mechanism against a counterparty"],
+  ["broke the law",     "operated outside the boundaries of the current regulatory framework"],
+  ["got a restraining order","received a legally mandated interpersonal distance protocol"],
+  ["committed fraud",   "deployed a non-compliant value extraction methodology"],
+  ["got a DUI",         "was cited for operating a vehicle in a chemically suboptimal state"],
+  ["went to court",     "participated in a formal adversarial dispute resolution session"],
+  ["hired a lawyer",    "onboarded a legal risk mitigation specialist"],
+  ["lost in court",     "received an unfavorable judicial outcome"],
+  ["won in court",      "achieved full legal vindication through formal proceedings"],
+  ["got probation",     "entered a court-supervised behavioral accountability program"],
+  ["did community service","fulfilled a civic contribution obligation"],
+  ["got a mugshot taken","produced an involuntary professional headshot"],
+  ["was falsely accused","navigated a factually inaccurate reputational threat"],
+
+  // Family / home life
+  ["moved back home",   "executed a strategic cost-optimization residential pivot"],
+  ["argued with parents","engaged in an intergenerational values misalignment session"],
+  ["got grounded",      "had my personal freedoms temporarily restructured by stakeholders"],
+  ["ran away from home","initiated an unauthorized independent living pilot program"],
+  ["forgot my mom's birthday","missed a critical relationship milestone delivery window"],
+  ["forgot my anniversary","failed to honor a high-priority personal commitment date"],
+  ["burnt dinner",      "encountered a culinary thermal management failure"],
+  ["flooded the bathroom","experienced an unexpected indoor fluid logistics incident"],
+  ["broke something expensive","initiated an involuntary asset depreciation event"],
+  ["lost my keys",      "experienced a physical access credential misplacement event"],
+  ["locked myself out", "encountered a self-imposed premises access barrier"],
+  ["lost my wallet",    "experienced a portable asset and identity document loss event"],
+  ["lost my phone",     "entered an unplanned digital detox through hardware misplacement"],
+  ["got robbed",        "experienced an involuntary asset reallocation by a third party"],
+  ["had a plumbing issue","navigated an unexpected fluid infrastructure crisis"],
+  ["had a power outage","operated within a temporary energy infrastructure gap"],
+  ["killed a houseplant","failed to maintain a low-complexity living organism"],
+  ["got a pet",         "onboarded a non-human dependent into my operational ecosystem"],
+  ["put a pet down",    "made the most painful and loving decision of my life"],
+  ["forgot to pay a bill","encountered an unintentional payment commitment gap"],
+
+  // Social media / internet
+  ["went viral for the wrong reason","achieved mass reach through a reputationally suboptimal moment"],
+  ["got cancelled",     "experienced a rapid and distributed social capital erosion event"],
+  ["deleted social media","executed a voluntary digital presence deprioritization strategy"],
+  ["got banned",        "was involuntarily offboarded from a digital engagement platform"],
+  ["argued online",     "deployed persuasive content into an adversarial digital discourse"],
+  ["posted something embarrassing","shared a suboptimal content asset before proper review"],
+  ["got ratio'd",       "received statistically significant negative sentiment feedback"],
+  ["bought followers",  "artificially inflated my social proof metrics"],
+  ["posted a thirst trap","deployed a high-engagement visual asset to optimize reach"],
+  ["overshared online", "exceeded the optimal personal disclosure threshold on a public channel"],
+  ["doom scrolled",     "engaged in passive infinite-feed content consumption"],
+  ["got addicted to TikTok","entered a short-form video engagement optimization spiral"],
+  ["sent a wrong text", "executed an audience-misaligned message deployment"],
+  ["accidentally posted a story","triggered an unintentional ephemeral content broadcast"],
+  ["got into a twitter argument","participated in a 280-character adversarial discourse thread"],
+  ["posted drunk",      "published content during a chemically uninhibited creative state"],
+  ["subtweeted someone","deployed indirect addressee-aware public commentary"],
+  ["got exposed",       "had my private actions surface into the public information ecosystem"],
+  ["made a finsta",     "launched a low-audience authentic personal brand channel"],
+  ["went on a rant",    "delivered an unstructured high-passion monologue to my audience"],
+
+  // Mental health / emotions
+  ["had a breakdown",   "reached a critical emotional infrastructure failure point"],
+  ["went to therapy",   "engaged a licensed cognitive performance optimization specialist"],
+  ["quit therapy",      "made a premature exit from my mental health improvement journey"],
+  ["had a depressive episode","navigated a prolonged low-energy emotional trough period"],
+  ["had an anxiety attack","experienced acute threat-response system activation"],
+  ["struggled with addiction","navigated a compulsive behavioral dependency challenge"],
+  ["went to rehab",     "enrolled in a structured substance recovery optimization program"],
+  ["relapsed",          "experienced a setback in my recovery journey — and kept going"],
+  ["self-sabotaged",    "unconsciously activated internal resistance to my own success"],
+  ["felt lonely",       "experienced a deficit in meaningful human connection metrics"],
+  ["felt like a fraud", "encountered classic high-achiever imposter syndrome activation"],
+  ["couldn't get out of bed","operated at minimum viable daily output capacity"],
+  ["stopped caring",    "reached a strategic emotional investment deprioritization point"],
+  ["gave up on a dream","made a painful long-term aspiration sunset decision"],
+  ["hit rock bottom",   "identified my lowest baseline from which all growth compounds"],
+  ["felt worthless",    "experienced a temporary severe self-valuation misalignment"],
+  ["went on antidepressants","implemented a neurochemical performance support protocol"],
+  ["had intrusive thoughts","experienced unwanted cognitive content without acting on it"],
+  ["dissociated",       "temporarily disconnected from my present-moment operating environment"],
+  ["finally asked for help","overcame internal resistance to access available support resources"],
+
+  // Embarrassing moments
+  ["tripped in public",  "executed an unplanned gravity-assisted locomotion correction"],
+  ["spilled coffee on myself","experienced an uncontrolled hot beverage deployment event"],
+  ["called the teacher mom","misallocated a maternal honorific in a professional context"],
+  ["walked into a glass door","collided with a transparent architectural barrier"],
+  ["forgot someone's name","experienced a temporary personal identifier retrieval failure"],
+  ["laughed at the wrong time","delivered an inappropriately timed positive emotional response"],
+  ["sent a risky text to the wrong person","experienced a catastrophic message routing failure"],
+  ["mispronounced a word in public","encountered a real-time phonetic execution error"],
+  ["waved back at someone not waving at me","initiated an unrequited public greeting gesture"],
+  ["got caught talking behind someone's back","was discovered conducting unsolicited stakeholder feedback"],
+  ["showed up on the wrong day","demonstrated a calendar synchronization misalignment"],
+  ["wore clothes inside out","implemented an inverted apparel deployment strategy"],
+  ["autocorrected embarrassingly","suffered an AI-assisted communication sabotage event"],
+  ["fell asleep in a meeting","entered an unsanctioned recovery mode during a sync session"],
+  ["laughed so hard I cried","achieved maximum bilateral emotional output saturation"],
+  ["snorted when laughing","delivered an acoustically enhanced comedic response"],
+  ["forgot to mute on a call","provided unfiltered ambient audio to all call participants"],
+  ["had spinach in my teeth all day","optimized my smile with an embedded green accent"],
+  ["showed up overdressed","exceeded the contextual dress code requirements significantly"],
+  ["showed up underdressed","failed to meet minimum contextual presentation standards"],
+
+  // Random life events
+  ["got a tattoo",      "made a permanent personal brand commitment to my physical canvas"],
+  ["regretted a tattoo","encountered long-term buyer's remorse on a permanent asset"],
+  ["went skydiving",    "stress-tested my risk tolerance at terminal velocity"],
+  ["got into a car accident","experienced an unplanned vehicular impact event"],
+  ["totaled my car",    "completed the full depreciation cycle of a vehicle asset"],
+  ["missed my train",   "encountered a transit synchronization failure"],
+  ["got lost",          "entered an unplanned navigation discovery experience"],
+  ["won a bet",         "validated my probabilistic judgment with financial confirmation"],
+  ["lost a bet",        "received a humbling recalibration of my predictive confidence"],
+  ["got a haircut",     "underwent a personal brand visual refresh"],
+  ["got a bad haircut", "received an unintended personal aesthetic disruption"],
+  ["adopted a child",   "welcomed a new member into my family's organizational structure"],
+  ["became a grandparent","achieved a new tier of intergenerational stakeholder status"],
+  ["retired early",     "executed a financially independent career exit ahead of schedule"],
+  ["moved countries",   "executed a bold geographic life optimization initiative"],
+  ["missed a flight",   "was gifted an unplanned airport reflection opportunity"],
+  ["lost my luggage",   "experienced an involuntary minimalist travel experiment"],
+  ["got food stuck in my throat","encountered an acute airway logistics challenge"],
+  ["sneezed during a presentation","delivered an unscheduled biometric audience moment"],
+
+  // Daily life
+  ["woke up",           "initiated my daily operational activation sequence"],
+  ["went to sleep",     "entered a scheduled cognitive maintenance downtime window"],
+  ["ate breakfast",     "consumed my morning performance fuel intake"],
+  ["skipped breakfast", "executed a strategic morning caloric fast"],
+  ["cooked dinner",     "orchestrated an in-house culinary production event"],
+  ["ordered food",      "delegated my nutritional sourcing to a third-party provider"],
+  ["went grocery shopping","conducted a strategic consumable inventory replenishment run"],
+  ["cleaned my house",  "performed a domestic environment optimization sweep"],
+  ["did laundry",       "executed a textile hygiene and freshness restoration cycle"],
+  ["took a shower",     "engaged in a personal hygiene and cognitive reset ritual"],
+  ["brushed my teeth",  "performed routine oral infrastructure maintenance"],
+  ["went for a walk",   "conducted an ambient-environment locomotion session"],
+  ["watched tv",        "engaged in passive narrative consumption and ideation"],
+  ["watched netflix",   "deployed a strategic entertainment recovery protocol"],
+  ["played video games","engaged in interactive digital challenge simulation"],
+  ["went to the gym",   "executed a scheduled physical capital investment session"],
+  ["ran a marathon",    "completed a 26.2-mile endurance optimization challenge"],
+  ["went hiking",       "conducted a nature-immersed terrain navigation experience"],
+  ["went swimming",     "engaged in aquatic resistance training and recovery"],
+  ["took a nap",        "deployed a mid-cycle cognitive recharge protocol"],
+
+  // Money / finance
+  ["spent money",       "allocated capital toward priority consumption vectors"],
+  ["saved money",       "executed a disciplined capital preservation initiative"],
+  ["invested money",    "deployed capital into future-value generation vehicles"],
+  ["lost money",        "experienced an unplanned capital redistribution event"],
+  ["paid rent",         "fulfilled my monthly residential access fee obligation"],
+  ["paid taxes",        "contributed to the collective societal infrastructure fund"],
+  ["got a credit card", "unlocked a leveraged spending and credit-building instrument"],
+  ["went into debt",    "strategically leveraged future earnings for present impact"],
+  ["paid off debt",     "achieved full liability elimination and financial liberation"],
+  ["bought a house",    "acquired a long-term appreciating physical asset"],
+  ["sold my house",     "executed a strategic real estate liquidity event"],
+  ["bought a car",      "invested in a personal mobility and status signaling asset"],
+  ["totaled my car",    "experienced an involuntary vehicle asset depreciation event"],
+  ["filed for bankruptcy","initiated a comprehensive financial architecture reset"],
+  ["won the lottery",   "achieved a statistically improbable capital infusion event"],
+  ["got a refund",      "successfully recovered misallocated consumer capital"],
+  ["split the bill",    "executed an equitable cost-sharing distribution protocol"],
+  ["left a tip",        "provided a discretionary service excellence acknowledgment"],
+  ["bargain shopped",   "optimized my procurement strategy for maximum value capture"],
+  ["impulse bought",    "executed an emotionally-driven unplanned capital deployment"],
+
+  // Health
+  ["went to the doctor","engaged a licensed biological systems diagnostic specialist"],
+  ["went to therapy",   "invested in professional cognitive architecture optimization"],
+  ["took medication",   "administered a prescribed biochemical performance stabilizer"],
+  ["quit smoking",      "strategically offboarded a legacy respiratory liability"],
+  ["quit drinking",     "deprecated my alcohol dependency and optimized for clarity"],
+  ["lost weight",       "achieved a measurable body composition optimization outcome"],
+  ["gained weight",     "expanded my physical mass index beyond target parameters"],
+  ["got injured",       "encountered an unexpected physical capital impairment event"],
+  ["recovered from injury","completed a structured physical resilience restoration program"],
+  ["had a headache",    "experienced a cranial pressure and focus degradation event"],
+  ["couldn't sleep",    "encountered a scheduled downtime execution failure"],
+  ["got a cold",        "navigated a temporary immune system stress-test event"],
+  ["got covid",         "experienced a high-profile viral disruption to operations"],
+  ["went vegan",        "pivoted to a plant-forward nutritional optimization framework"],
+  ["started dieting",   "initiated a structured caloric intake recalibration protocol"],
+  ["drank water",       "optimized my cellular hydration infrastructure"],
+  ["forgot to eat",     "accidentally executed an unplanned intermittent fast"],
+  ["stress ate",        "engaged in emotionally-triggered caloric comfort deployment"],
+  ["went to the dentist","scheduled a routine oral hardware inspection and servicing"],
+  ["got glasses",       "acquired corrective visual performance enhancement hardware"],
+
+  // Technology
+  ["bought a phone",    "upgraded my primary mobile productivity and communication device"],
+  ["broke my phone",    "experienced an unplanned mobile hardware deprecation event"],
+  ["lost my phone",     "encountered an involuntary device offboarding situation"],
+  ["deleted an app",    "strategically pruned my digital tool ecosystem"],
+  ["got hacked",        "experienced an unauthorized system access and data extraction event"],
+  ["forgot my password","encountered a credential retrieval friction point"],
+  ["updated my software","deployed a critical system performance and security patch"],
+  ["crashed my computer","experienced a full system operational continuity failure"],
+  ["ran out of storage", "reached peak digital asset accumulation capacity"],
+  ["went offline",      "entered a forced digital detox and analog productivity mode"],
+  ["sent a wrong text",  "executed a misdirected communication deployment"],
+  ["posted something embarrassing","published a suboptimal personal brand content asset"],
+  ["deleted a post",    "executed a strategic content retraction and narrative reset"],
+  ["went on social media","conducted a passive competitive landscape monitoring sweep"],
+  ["doomscrolled",      "engaged in an extended low-yield digital content consumption spiral"],
+
+  // Travel
+  ["went on vacation",  "deployed a scheduled personal recovery and experience investment"],
+  ["missed my train",   "encountered an unexpected schedule recalibration opportunity"],
+  ["got lost",          "entered an unplanned exploratory navigation experience"],
+  ["forgot my passport","encountered a critical travel documentation gap"],
+  ["got jet lagged",    "experienced a cross-timezone circadian desynchronization event"],
+  ["went camping",      "deployed to a low-infrastructure outdoor resilience environment"],
+  ["moved cities",      "executed a strategic geographic life optimization pivot"],
+  ["moved countries",   "initiated a cross-border life and career diversification initiative"],
+  ["visited family",    "conducted a scheduled legacy relationship investment session"],
+  ["went to a wedding", "attended a formal long-term partnership commencement ceremony"],
+
+  // Emotions / mindset
+  ["gave up on a dream","strategically reallocated emotional capital to higher-ROI pursuits"],
+  ["chased a dream",    "committed to a high-risk high-reward personal vision trajectory"],
+  ["felt lonely",       "experienced a temporary human connection deficit"],
+  ["felt proud",        "registered a measurable internal achievement satisfaction metric"],
+  ["felt embarrassed",  "encountered a public personal brand vulnerability moment"],
+  ["felt overwhelmed",  "experienced a simultaneous multi-vector cognitive load spike"],
+  ["felt hopeful",      "detected an upward trend in my internal optimism indicators"],
+  ["felt lost",         "navigated a transitional period of strategic identity ambiguity"],
+  ["had a realization", "experienced a high-impact cognitive pattern recognition event"],
+  ["changed my mind",   "executed a data-driven belief system recalibration"],
+  ["made a decision",   "completed a multi-variable strategic option evaluation process"],
+  ["took a risk",       "deliberately entered an asymmetric upside opportunity space"],
+  ["played it safe",    "optimized for variance reduction over maximum upside capture"],
+  ["asked for help",    "leveraged my ecosystem to access distributed expertise"],
+  ["said no",           "exercised strategic boundary enforcement for focus preservation"],
+  ["said yes",          "unlocked a new opportunity vector through proactive commitment"],
+  ["apologized",        "delivered a formal accountability acknowledgment and reset"],
+  ["forgave someone",   "released a legacy emotional liability for personal optimization"],
+  ["set a boundary",    "architected a personal operating parameter for sustainable output"],
+  ["celebrated",        "acknowledged a milestone with an intentional reward deployment"],
+  
+  // Embarrassing / relatable
+  ["tripped and fell",  "experienced an unexpected gravitational compliance event"],
+  ["spilled coffee",    "executed an unplanned beverage redeployment onto my workspace"],
+  ["farted in a meeting","contributed an unscheduled aromatic deliverable to the room"],
+  ["showed up late",    "arrived at a strategically optimized entry point in the agenda"],
+  ["forgot someone's name","experienced a temporary stakeholder identifier retrieval failure"],
+  ["talked to myself",  "conducted an internal alignment session with my core team"],
+  ["laughed at my own joke","self-validated my humor hypothesis with measurable conviction"],
+  ["cried at a movie",  "experienced an empathy-driven emotional data processing event"],
+  ["got caught lying",  "encountered an unexpected transparency enforcement moment"],
+  ["lied on my resume", "proactively future-paced my professional achievement timeline"],
+  ["wore the same outfit twice","deployed a pre-approved wardrobe asset for maximum efficiency"],
+  ["forgot to mute",    "accidentally enabled full-broadcast mode during a sensitive moment"],
+  ["joined the wrong zoom","onboarded into a misaligned virtual collaboration environment"],
+  ["fell asleep in a meeting","entered an unsolicited recovery mode during a low-yield sync"],
+  ["replied all",       "democratized a private communication to all relevant stakeholders"],
+  ["sent an email to the wrong person","executed a misdirected stakeholder communication deployment"],
+  ["autocorrected badly","experienced an AI-assisted message content corruption event"],
+  ["liked an old post",  "inadvertently surfaced a legacy content asset while auditing"],
+  ["stalked an ex online","conducted an unsolicited competitive personal intelligence review"],
+  ["googled myself",    "performed a personal brand digital footprint audit"],
+
+  // Food / eating
+  ["ate fast food",     "consumed an expedited caloric delivery system product"],
+  ["burned dinner",     "achieved an unplanned thermal transformation of my meal assets"],
+  ["forgot to eat lunch","accidentally extended my morning fast through peak productivity hours"],
+  ["ate someone else's food","reallocated an unclaimed nutritional resource in the shared commons"],
+  ["stress baked",      "channeled elevated cortisol levels into artisanal carb production"],
+  ["failed at cooking", "encountered significant friction in my culinary execution pipeline"],
+  ["ate cereal for dinner","optimized my evening meal for speed and minimal operational overhead"],
+  ["finished the whole pizza","achieved complete single-session pizza asset liquidation"],
+  ["ate in bed",        "conducted a horizontal dining and recovery co-optimization session"],
+  ["drank expired milk", "consumed a dairy product operating outside its peak performance window"],
+  ["forgot to defrost",  "encountered a critical meal prep pipeline bottleneck"],
+  ["ordered the wrong thing","received a low-fit nutritional asset due to a procurement miscommunication"],
+  ["ate the last slice", "executed a first-mover advantage strategy on a scarce shared resource"],
+  ["microwaved fish at work","deployed a high-impact olfactory presence in the shared kitchen ecosystem"],
+  ["stress ordered takeout","outsourced my nutritional needs during a high-pressure execution sprint"],
+
+  // Pets / animals
+  ["got a dog",         "onboarded a high-loyalty low-equity four-legged dependant"],
+  ["my dog ate my homework","experienced a canine-initiated document destruction incident"],
+  ["cat knocked things over","endured an unsolicited feline workspace disruption event"],
+  ["forgot to feed my pet","missed a critical dependant stakeholder nourishment touchpoint"],
+  ["stepped on a lego", "encountered a low-profile high-impact podiatric hazard"],
+  ["got chased by a dog","engaged in an uninvited high-velocity canine pursuit scenario"],
+  ["talked to my pet",  "held a one-directional strategic vision alignment session"],
+  ["let my pet sleep in my bed","granted a non-human stakeholder premium real estate access"],
+  ["my fish died",      "experienced an aquatic asset lifecycle completion event"],
+  ["got bitten by a mosquito","suffered an unsolicited micro-extraction by an airborne threat actor"],
+
+  // Sports / fitness
+  ["came last in a race","secured the most exclusive position in the finishing order"],
+  ["missed the gym again","deprioritized my physical capital investment for the third consecutive cycle"],
+  ["pulled a muscle",   "encountered a soft tissue performance limitation event"],
+  ["forgot my gym shoes","arrived at my fitness facility without the required hardware"],
+  ["gave up halfway",   "executed a strategic mid-effort resource conservation decision"],
+  ["lost at chess",     "received a masterclass in strategic thinking from a superior operator"],
+  ["lost at monopoly",  "was systematically eliminated from a high-stakes asset acquisition simulation"],
+  ["got picked last",   "was selected as the anchor position in a talent draft scenario"],
+  ["hit myself with a bat","experienced a self-inflicted equipment deployment miscalculation"],
+  ["forgot the score",  "lost situational awareness of the current performance metric dashboard"],
+
+  // Work / office absurdity
+  ["attended too many meetings","sustained a prolonged strategic alignment consumption marathon"],
+  ["did someone else's work","expanded my impact radius beyond my defined role boundaries"],
+  ["took credit for someone's idea","amplified and repackaged an emerging insight from my ecosystem"],
+  ["pretended to be busy","maintained a high-visibility productivity optics presence"],
+  ["browsed reddit at work","conducted informal cross-community qualitative research during office hours"],
+  ["got caught on my phone","was observed optimizing my mobile engagement strategy mid-meeting"],
+  ["wrote a strongly worded email","crafted a high-conviction stakeholder sentiment communication"],
+  ["passive aggressively replied","delivered a diplomatically layered response with embedded subtext"],
+  ["quit over text",    "executed a remote-first resignation communication strategy"],
+  ["cried in the bathroom","utilized auxiliary office infrastructure for emotional processing"],
+  ["complained about my boss","shared upward feedback through an informal peer-to-peer channel"],
+  ["talked about leaving for years","maintained a long-horizon exit optionality awareness posture"],
+  ["printed something incorrectly","produced a hard-copy asset with suboptimal configuration parameters"],
+  ["broke the printer", "encountered a critical shared hardware infrastructure failure"],
+  ["forgot someone's birthday","deprioritized a key relationship milestone touchpoint"],
+
+  // Social / awkward
+  ["waved back at someone who wasn't waving at me","engaged in a misdirected social acknowledgment gesture"],
+  ["laughed at the wrong moment","deployed humor at a contextually misaligned juncture"],
+  ["called a teacher mom","accidentally applied domestic relational labeling in an academic context"],
+  ["walked into a glass door","encountered a transparency-related navigational hazard"],
+  ["showed up to a party on time","arrived before social norms permitted visible guest presence"],
+  ["talked through a whole movie","provided unsolicited real-time commentary during a passive viewing experience"],
+  ["told a story nobody cared about","delivered a low-engagement narrative asset to an indifferent audience"],
+  ["went quiet on the group chat","strategically deprioritized asynchronous social engagement obligations"],
+  ["left someone on read","deliberately withheld a response to manage communication expectations"],
+  ["double texted",     "proactively followed up on an unacknowledged communication touchpoint"],
+  ["drunk texted my ex","deployed emotionally uninhibited outreach to a legacy relationship contact"],
+  ["overshared at dinner","exceeded the acceptable personal disclosure threshold in a social context"],
+  ["showed up to the wrong party","navigated a critical event attendance miscalibration scenario"],
+  ["forgot to RSVP",    "failed to submit my attendance intent through the appropriate channel"],
+  ["canceled last minute","executed a same-day commitment portfolio optimization decision"],
+
+  // Random absurdity
+  ["lost the remote",   "experienced a critical entertainment navigation tool misplacement event"],
+  ["argued about nothing","engaged in a low-stakes high-intensity discourse calibration exercise"],
+  ["forgot why I walked into a room","experienced a short-term spatial intent retrieval failure"],
+  ["stubbed my toe",    "encountered a low-profile high-impact extremity impact event"],
+  ["got a paper cut",   "sustained a minor but disproportionately painful office supply injury"],
+  ["couldn't open a jar","encountered significant resistance in my container access execution"],
+  ["sat in wet grass",  "discovered suboptimal moisture levels in my chosen seating surface"],
+  ["bought something I didn't need","expanded my asset portfolio with a low-utility acquisition"],
+  ["lost my keys",      "experienced a critical physical access credential misplacement event"],
+  ["locked myself out", "achieved a self-imposed access revocation to my own infrastructure"],
+  ["talked during a movie","delivered unsolicited real-time narrative commentary to co-viewers"],
+  ["spoiled a show",    "inadvertently distributed premium plot intelligence ahead of schedule"],
+  ["stayed up until 3am","extended my operational window deep into the nocturnal productivity zone"],
+  ["read comments online","conducted an unfiltered public sentiment analysis deep dive"],
+  ["argued with a stranger online","engaged in an asynchronous adversarial discourse with an unvetted stakeholder"],  ["forgot to wear deodorant","unintentionally ran an olfactory authenticity experiment"],
+  
+];
+
+/* applies the word map with some artificial intelligence assistance*/
+function applyWordMap(text){
+  var result=text;
+  var transforms=[];
+  for(var i=0;i<WORD_MAP.length;i++){
+    var orig=WORD_MAP[i][0];
+    var repl=WORD_MAP[i][1];
+    var lower=result.toLowerCase();
+    var idx=lower.indexOf(orig.toLowerCase());
+    if(idx!==-1){
+      var before=result.slice(0,idx);
+      var after=result.slice(idx+orig.length);
+      result=before+repl+after;
+      transforms.push({from:orig,to:repl});
+    }
+  }
+  return {result:result,transforms:transforms};
+}
+
+function detectIntent(text){
+  var t=text.toLowerCase();
+  if(/fail|reject|fired|quit|lost|wrong|mistake|bad|struggle|burn|gave up/.test(t)) return "failure";
+  if(/success|win|achiev|promot|launch|built|shipped|grew|raised|funded/.test(t)) return "success";
+  if(/learn|realiz|discover|figur|understand|lesson/.test(t)) return "insight";
+  if(/job|work|career|intern|employ|role|position|office/.test(t)) return "career";
+  return "general";
+}
+
+/*Prewritten sentence structures that we prewrote to help with translations and wordiness*/
+var LI_HOOKS=[
+  "I don't usually post stuff like this, but here goes.",
+  "Okay, I've been sitting on this for a while and I need to say it.",
+  "Something happened this week and I keep thinking about it.",
+  "This is probably oversharing but honestly I don't care anymore.",
+  "I almost didn't write this. Then I figured — why not.",
+  "Three months ago I was in a completely different headspace.",
+  "I've never really talked about this publicly before.",
+  "Real talk, because I'm tired of only seeing the highlight reel.",
+  "People only post the wins. I'm posting this anyway.",
+  "I've been thinking about whether to share this all week.",
+];
+var LI_BRIDGE=[
+  "Here's what actually happened:",
+  "So this is where it gets interesting:",
+  "And I'll be honest, I wasn't prepared for it:",
+  "What nobody told me beforehand:",
+  "Looking back now, I can actually see it:",
+  "The part that hit me hardest:",
+  "And then this happened:",
+];
+var LI_REFLECTIONS=[
+  "Didn't see it coming. Wouldn't change it.",
+  "It wasn't pretty. But it was necessary.",
+  "You don't always get to choose what happens to you. You do get to choose what you do next.",
+  "Honestly? Best thing that ever happened to me, even if it didn't feel like it at the time.",
+  "I'm still figuring it out. And I think that's okay.",
+  "It forced me to be honest with myself in a way I'd been avoiding.",
+  "Not everything has a neat takeaway. Sometimes you just have to go through it.",
+  "Turns out the hard things are usually the ones worth doing.",
+];
+var LI_ENDINGS=[
+  "Has anything like this happened to you? I'd genuinely love to hear it.",
+  "If you're going through something similar right now — you're not alone.",
+  "Drop a comment if this resonated. Curious how many people have been here.",
+  "What's something that surprised you about your own path? Tell me below.",
+  "I don't have all the answers. But I'm asking better questions now.",
+  "If this hit home, share it. Someone in your network probably needs it today.",
+  "Would love to hear your version of this story.",
+];
+var LI_HASHTAG_SETS=[
+  ["#Growth","#Mindset","#CareerLessons"],
+  ["#Leadership","#PersonalDevelopment","#RealTalk"],
+  ["#Resilience","#WorkLife","#Hustle"],
+  ["#BuildInPublic","#Founder","#StartupLife"],
+  ["#NeverStopLearning","#CareerGrowth","#ProfessionalDevelopment"],
+];
+var LI_NAMES=[
+  ["Tralalelo Tralala",   "Growth Strategist | Builder | Lifelong Learner"],
+  ["Jordan Jackson",  "Founder-in-Training | Student | Future McDonalds Reject (Probably)"],
+  ["Tung Tung Tung Sahur",      "Roadrunner | RiskTaker | Entrepreneur"],
+  ["Bruce Lee",    "Product Lead | Leadership Coach | Recovering Perfectionist"],
+  ["Casey Brooks",  "Marketing Director | Failure | LinkedIn Top Voice"],
+  ["Genghis Khan" ,"EntrPioneerWebConquerorr | Just a Human Being"],
+  ["Taylor Wukng",     "UX Designer | Builder | Obsessively Systems-Oriented"],
+  ["King Von", "Investor | Advisor | Trying to Give More Than I Take"],
+  ["PlayBoi Carti",  "Head of People | Culture Architect | Dog Dad"],
+  ["Bonnie Bombardino",   "Strategy Consultant | 2x Founder | Speaker"],
+];
+var LI_COLORS=["#0a66c2","#2e7d32","#7b1fa2","#c62828","#e65100","#00695c","#1565c0","#ad1457","#00838f","#558b2f"];
+var LI_TIMES=["Just now","2h","4h","8h","1d","2d","3d"];
+
+var DC_USERNAMES=["xX_coder_Xx","hustlegremlin","void_returner","not_a_bot_trust","silent_dev","chaotic_good_dev","nullpointer","fr0stbyte","glitch_witch","daemon_king","404_found","segfault_sam"];
+var DC_ROLES=["Gamer","Mod","Dev","Nitro Booster","Active","Caffeinated","Admin","Helper","OG"];
+var DC_COLORS=["#5865f2","#57f287","#faa61a","#eb459e","#ed4245","#00b0f4","#f47fff","#43b581"];
+var DC_SERVERS=["dev-cave","late-night-grind","startup-chaos","random","general","vent-channel","bruh-moment"];
+var DC_CHANNELS=["#general","#vent","#random","#off-topic","#life-stuff","#daily-struggle","#real-talk"];
+
+var DC_TEMPLATES=[
+  function(c){return "ok so "+c+" and i genuinely don't know how to feel about it"},
+  function(c){return "guys "+c+" just happened and i've been staring at my ceiling for like 20 minutes"},
+  function(c){return c+"... i'm fine. i'm totally fine"},
+  function(c){return "bro can someone explain why "+c+" is just a thing that happens to me specifically"},
+  function(c){return "not to be dramatic but "+c+" and i think i need a nap"},
+  function(c){return "UPDATE: "+c+". i am not okay. carry on"},
+  function(c){return "sorry for the sudden message but "+c+" and i need to tell someone"},
+  function(c){return "so "+c+" happened. on a wednesday. mid-week crisis unlocked"},
+];
+
+var RD_USERNAMES=["throwaway_for_obvious_reasons","GrindingTillImDead","JustANormalHuman_","OverworkedAndUnderpaid","real_talk_only","definitely_deleting_this","acc_made_today_lol","frustrated_but_fine","quietly_screaming_rn","NotLookingForAdvice","burner_acc_2847","posting_and_logging_off"];
+var RD_SUBS=["r/cscareerquestions","r/antiwork","r/mildlyinfuriating","r/unpopularopinion","r/jobs","r/productivity","r/confession","r/offmychest","r/Advice","r/work"];
+var RD_FLAIRS=["Discussion","Rant","Update","Seeking Advice","Story Time","Question","Venting","Not sure which flair to use"];
+var RD_TITLES=[
+  "Am I overreacting or is this actually bad?",
+  "This happened today and I genuinely can't stop thinking about it",
+  "Is this normal or is it just me",
+  "Update on my situation (it got weirder)",
+  "Does anyone else deal with this or am I just unlucky",
+  "Need to say this somewhere — posting here because I have no one else to tell",
+  "Long post, sorry. Needed to get this out.",
+  "I don't even know what I'm looking for. Just needed to write it down.",
+];
+var RD_BODIES=[
+  function(b){return "So basically: "+b+".\n\nI wasn't going to post this but it's been sitting with me all day and I had to put it somewhere. I know nobody asked but if you've been through something similar I genuinely want to know how you handled it."+rand(["\n\nEdit: didn't expect people to actually respond, thanks for the comments","",""])},
+  function(b){return "Long story short: "+b+".\n\nI've been going back and forth on whether this is actually a problem or if I'm just being dramatic. Honestly still don't know. Would appreciate any perspective from people who've been here."+rand(["\n\nEdit: ok going to bed, will read replies tomorrow","",""])},
+  function(b){return "Not sure how to explain this but: "+b+".\n\nJust needed to say it out loud (or type it I guess). Still processing. If this has happened to you, how did you deal with it? No judgment."+rand(["\n\nTLDR: same as title","",""])},
+];
+
+/* sentence structuures chosen randomly*/
+function buildLinkedIn(rawText){
+  var wm=applyWordMap(rawText);
+  var body=wm.result;
+  var intent=detectIntent(rawText);
+
+  var hook=rand(LI_HOOKS);
+  var bridge=rand(LI_BRIDGE);
+  var reflection=rand(LI_REFLECTIONS);
+  var ending=rand(LI_ENDINGS);
+  var tags=rand(LI_HASHTAG_SETS).join(" ");
+
+  // Make body sentence: capitalize first letter, ensure period
+  var bodySentence=body.charAt(0).toUpperCase()+body.slice(1);
+  if(!/[.!?]$/.test(bodySentence)) bodySentence+=".";
+
+  var paragraphs=[hook, bridge+" "+bodySentence, reflection, ending];
+
+  var nameArr=rand(LI_NAMES);
+  var name=nameArr[0], headline=nameArr[1];
+  var color=rand(LI_COLORS);
+  var initials=name.split(" ").map(function(w){return w[0]}).join("");
+  var likes=randInt(148,8400);
+  var comments=randInt(12,280);
+  var reposts=randInt(3,90);
+  var timeAgo=rand(LI_TIMES);
+
+  var parasHtml=paragraphs.map(function(p){return "<p>"+escH(p)+"</p>"}).join("");
+
+  // Pre-made comments
+  var liSeedComments=[
+    {name:"Bruce Wayne",  headline:"Founder & CEO @ Stealth", color:"#2e7d32", text:"This resonates so deeply. Saving this one.", time:"1h"},
+    {name:"Andrew Tate", headline:"Bugatti Driver", color:"#7b1fa2", photo:"https://research.qut.edu.au/centre-for-justice/wp-content/uploads/sites/304/2023/06/Andrew-Tate-768x768.jpg", text:"Needed to ride this bugatti today. Thank you for sharing.", time:"3h"},
+    {name:"Bufanaqueshria Tyrone Jackson", headline:"Talent Partner | Coach",   color:"#c62828", text:"100%. The growth is in the discomfort.", time:"6h"},
+  ];
+  var seededHtml=liSeedComments.map(function(c){
+    var inits=c.name.split(" ").map(function(w){return w[0]}).join("");
+    var avatarHtml = c.photo
+      
+    ? '<div class="li-c-avatar" style="background:none;padding:0;overflow:hidden"><img src="'+escH(c.photo)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="'+escH(c.name)+'"></div>'
+    : '<div class="li-c-avatar" style="background:'+c.color+'">'+escH(inits)+'</div>';
+    return '<div class="li-c">'+avatarHtml
+      +'<div class="li-c-body">'
+      +'<div style="display:flex;align-items:baseline;gap:6px">'
+      +'<span class="li-c-name">'+escH(c.name)+'</span>'
+      +'<span class="li-c-meta">'+escH(c.time)+'</span>'
+      +'</div>'
+      +'<div class="li-c-headline">'+escH(c.headline)+'</div>'
+      +'<div class="li-c-text">'+escH(c.text)+'</div>'
+      +'<div class="li-c-actions">'
+      +'<button class="li-c-act" data-action="like" data-likes="'+randInt(2,38)+'"><span class="act-icon">&#128077;</span> Like &middot; <span class="li-c-likes">'+randInt(2,38)+'</span></button>'
+      +'<button class="li-c-act" data-action="reply">Reply</button>'
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }).join("");
+ // Ai help for pfps
+  var html='<div class="li-card">'
+    +'<div class="li-header">'
+    +'<div class="li-avatar" style="background:'+color+'">'+escH(initials)+'</div>'
+    +'<div style="flex:1;min-width:0">'
+    +'<div class="li-name">'+escH(name)+'</div>'
+    +'<div class="li-headline">'+escH(headline)+'</div>'
+    +'<div class="li-time">'+escH(timeAgo)+' &middot; &#127760;</div>'
+    +'</div>'
+    +'<button class="li-follow-btn" data-state="0">+ Follow</button>'
+    +'</div>'
+    +'<div class="li-body">'
+    +parasHtml
+    +'<div class="li-hashtags">'+escH(tags)+'</div>'
+    +'</div>'
+    +'<div class="li-divider"></div>'
+    +'<div class="li-react-bar">'
+    +'<div class="li-react-emojis">'
+    +'<div class="react-icons"><span>&#128077;</span><span style="background:#e9f2ff">&#10084;</span><span style="background:#fff3e0">&#128293;</span></div>'
+    +'&nbsp;<span class="li-react-count" data-raw="'+likes+'">'+randK(likes)+'</span>'
+    +'</div>'
+    +'<div style="font-size:.78rem;color:rgba(0,0,0,.45)"><span class="li-comment-count" data-raw="'+comments+'">'+comments+'</span> comments &middot; <span class="li-repost-count" data-raw="'+reposts+'">'+reposts+'</span> reposts</div>'
+    +'</div>'
+    +'<div class="li-action-bar">'
+    +'<div class="li-action" data-action="like"><span class="act-icon">&#128077;</span> Like</div>'
+    +'<div class="li-action" data-action="comment"><span class="act-icon">&#128172;</span> Comment</div>'
+    +'<div class="li-action" data-action="repost"><span class="act-icon">&#128260;</span> Repost</div>'
+    +'<div class="li-action" data-action="send"><span class="act-icon">&#128228;</span> Send</div>'
+    +'</div>'
+    +'<div class="li-comments-section">'
+    +'<div class="li-comp-row">'
+    +'<div class="li-comp-avatar">YO</div>'
+    +'<div class="li-comp-input-wrap">'
+    +'<textarea class="li-comp-input" placeholder="Add a comment&#8230;" rows="1"></textarea>'
+    +'<div class="li-comp-actions">'
+    +'<button class="li-comp-post" disabled>Post</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="li-comment-list">'+seededHtml+'</div>'
+    +'</div>'
+    +'</div>';
+
+  var plain=paragraphs.join("\n\n")+"\n\n"+tags;
+  return {platform:"linkedin",intent:intent,transforms:wm.transforms,
+          structure:"Hook &#8594; Bridge &#8594; Statement &#8594; Reflection &#8594; Engagement",
+          html:html,plainText:plain};
+}
+//Pre written (fake) metadata for realism.
+function buildDiscord(rawText){
+  var wm=applyWordMap(rawText);
+  var body=wm.result;
+  var intent=detectIntent(rawText);
+
+  var username=rand(DC_USERNAMES);
+  var role=rand(DC_ROLES);
+  var color=rand(DC_COLORS);
+  var initials=username.slice(0,2).toUpperCase();
+  var server=rand(DC_SERVERS);
+  var channel=rand(DC_CHANNELS);
+  var timeAgo=rand(["Today at 2:34 PM","Today at 9:12 AM","Yesterday at 11:47 PM","Today at 6:05 PM","Today at 12:00 AM"]);
+
+  // Make it casual through adding in filler words
+  var casual=body
+    .replace(/\./g,"").replace(/,/g,"")
+    .toLowerCase()
+    .replace(/\bvery\b/g,"so")
+    .replace(/\bextremely\b/g,"literally")
+    .replace(/\bi am\b/g,"i'm")
+    .replace(/\bi have\b/g,"i've")
+    .replace(/\bcannot\b/g,"can't");
+
+  var msg=rand(DC_TEMPLATES)(casual);
+// created accurate reactions after learning with AI
+  var allReactions=[
+    {e:"&#128557;",base:randInt(4,28)},
+    {e:"&#128128;",base:randInt(2,15)},
+    {e:"&#128293;",base:randInt(1,10)},
+    {e:"&#128514;",base:randInt(3,20)},
+    {e:"&#129361;",base:randInt(1,8)},
+    {e:"&#128064;",base:randInt(2,12)},
+  ];
+  var reactions=pick(3,allReactions);
+
+  var reactHtml=reactions.map(function(r){
+    return '<div class="dc-reaction" data-count="'+r.base+'" data-reacted="0">'
+      +r.e+' <span class="rc">'+r.base+'</span></div>';
+  }).join("");
+
+  // Premade replies in this channel
+  var dcSeed=[
+    {u:rand(DC_USERNAMES), color:rand(DC_COLORS), text:"oh no not again", time:"Today at 2:36 PM"},
+    {u:rand(DC_USERNAMES), color:rand(DC_COLORS), text:"bro same i felt that in my soul", time:"Today at 2:38 PM"},
+  ];
+  var dcSeedHtml=dcSeed.map(function(r){
+    var inits=r.u.slice(0,2).toUpperCase();
+    return '<div class="dc-reply-row">'
+      +'<div class="dc-reply-avatar" style="background:'+r.color+'">'+escH(inits)+'</div>'
+      +'<div class="dc-reply-body">'
+      +'<div class="dc-reply-name-row">'
+      +'<span class="dc-reply-name" style="color:'+r.color+'">'+escH(r.u)+'</span>'
+      +'<span class="dc-reply-time">'+escH(r.time)+'</span>'
+      +'</div>'
+      +'<div class="dc-reply-text">'+escH(r.text)+'</div>'
+      +'</div>'
+      +'</div>';
+  }).join("");
+
+  var html='<div class="dc-card">'
+    +'<div class="dc-server-bar">'
+    +'<div class="dc-server-icon" style="background:'+color+'">'+escH(server.slice(0,1).toUpperCase())+'</div>'
+    +'<span style="color:#b5bac1;font-weight:600">'+escH(server)+'</span>'
+    +' &rsaquo; <span class="dc-channel">'+escH(channel)+'</span>'
+    +'</div>'
+    +'<div class="dc-msg-wrap">'
+    +'<div class="dc-avatar" style="background:'+color+'">'+escH(initials)+'</div>'
+    +'<div class="dc-msg-body">'
+    +'<div class="dc-name-row">'
+    +'<span class="dc-username" style="color:'+color+'">'+escH(username)+'</span>'
+    +'<span class="dc-role-badge">'+escH(role)+'</span>'
+    +'<span class="dc-time">'+escH(timeAgo)+'</span>'
+    +'</div>'
+    +'<div class="dc-content">'+escH(msg)+'</div>'
+    +'<div class="dc-reactions-row">'+reactHtml+'</div>'
+    +'<div class="dc-emoji-picker">'
+    +'<button data-emoji="&#128557;" title="cry">&#128557;</button>'
+    +'<button data-emoji="&#128514;" title="lol">&#128514;</button>'
+    +'<button data-emoji="&#128293;" title="fire">&#128293;</button>'
+    +'<button data-emoji="&#128064;" title="eyes">&#128064;</button>'
+    +'<button data-emoji="&#129327;" title="hot">&#129327;</button>'
+    +'<button data-emoji="&#128128;" title="skull">&#128128;</button>'
+    +'<button data-emoji="&#10084;" title="heart">&#10084;</button>'
+    +'<button data-emoji="&#128077;" title="thumb">&#128077;</button>'
+    +'<button data-emoji="&#129488;" title="mind">&#129488;</button>'
+    +'<button data-emoji="&#129327;" title="sob">&#129327;</button>'
+    +'</div>'
+    +'<div class="dc-replies">'+dcSeedHtml+'</div>'
+    +'<div class="dc-reply-input-row">'
+    +'<input class="dc-reply-input" placeholder="Reply to '+escH(username)+'&#8230;" />'
+    +'<button class="dc-reply-send">Send</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="dc-toolbar">'
+    +'<div class="dc-tool" data-action="react" title="Add Reaction">&#128512; React</div>'
+    +'<div class="dc-tool" data-action="reply" title="Reply">&#8617; Reply</div>'
+    +'<div class="dc-tool" data-action="thread" title="View Replies">&#128172; Thread</div>'
+    +'<div class="dc-tool" data-action="more" title="More">&#8230;</div>'
+    +'</div>'
+    +'</div>';
+
+  return {platform:"discord",intent:intent,transforms:wm.transforms,
+          structure:"Server context &#8594; Casual message &#8594; Reactions",
+          html:html,plainText:msg};
+}
+
+function buildReddit(rawText){
+  var wm=applyWordMap(rawText);
+  var body=wm.result;
+  var intent=detectIntent(rawText);
+
+  var user=rand(RD_USERNAMES);
+  var sub=rand(RD_SUBS);
+  var flair=rand(RD_FLAIRS);
+  var title=rand(RD_TITLES);
+  var upvotes=randInt(24,12400);
+  var commentCount=randInt(8,680);
+  var timeAgo=rand(["2 hours ago","5 hours ago","1 day ago","just now","14 hours ago","3 hours ago"]);
+
+  var bodyLower=body.charAt(0).toLowerCase()+body.slice(1);
+  if(!/[.!?]$/.test(bodyLower)) bodyLower+=".";
+
+  var redditBody=rand(RD_BODIES)(bodyLower);
+
+  var rdHtml=redditBody.split("\n\n").map(function(p){return escH(p)}).join("<br><br>");
+
+  // Fake comments (pre written) to sound like real Reddit replies 
+  var allFakeComments=[
+    {u:"throwaway88827461",   c:"This is almost word for word my situation from last year. It gets better but not quickly, just heads up.",v:randInt(800,5200)},
+    {u:"Pragmatic_Pam_",      c:"Honestly? Completely normal. People just don't talk about it.",v:randInt(300,2100)},
+    {u:"deleted",             c:"[deleted]",v:randInt(40,400)},
+    {u:"HonestlyJustTired",   c:"I don't have advice but I read the whole thing and I feel for you.",v:randInt(200,1800)}, 
+    {u:"SomeRandomLurker99",  c:"The fact that you're even aware of it puts you ahead of most people.",v:randInt(100,900)},
+    {u:"been_there_2019",     c:"Went through this exact thing. DM me if you want, happy to talk.",v:randInt(50,300)},
+    {u:"JustHereToObserve",   c:"Not going to give advice but yeah, this tracks.",v:randInt(10,90)},
+    {u:"contrarian_opinion_",  c:"I'm going to push back slightly — have you considered the other side of this?",v:randInt(2,40)},
+  ];
+  var chosenComments=pick(3,allFakeComments);
+  var commHtml=chosenComments.map(function(fc){
+    return '<div class="rd-c-row">'
+      +'<div class="rd-c-meta">u/'+escH(fc.u)+' &middot; '+escH(rand(["3h","5h","9h","1d","2d","just now"]))+'</div>'
+      +'<div class="rd-c-text">'+escH(fc.c)+'</div>'
+      +'<div class="rd-c-bar">'
+      +'<div class="rd-c-vote">'
+      +'<button class="rd-c-vbtn" data-dir="up">&#9650;</button>'
+      +'<span class="rd-c-vcount" data-raw="'+fc.v+'">'+randK(fc.v)+'</span>'
+      +'<button class="rd-c-vbtn" data-dir="down">&#9660;</button>'
+      +'</div>'
+      +'<button class="rd-c-act" data-action="reply">Reply</button>'
+      +'<button class="rd-c-act" data-action="award">Give Award</button>'
+      +'<button class="rd-c-act" data-action="share">Share</button>'
+      +'</div>'
+      +'<div class="rd-c-reply-box">'
+      +'<textarea class="rd-c-reply-input" placeholder="What are your thoughts?"></textarea>'
+      +'<div class="rd-c-reply-actions">'
+      +'<button class="rd-c-reply-cancel">Cancel</button>'
+      +'<button class="rd-c-reply-post">Reply</button>'
+      +'</div>'
+      +'</div>'
+      +'<div class="rd-c-thread-list"></div>'
+      +'</div>';
+  }).join("");
+
+  var html='<div class="rd-card">'
+    +'<div class="rd-body-row">'
+    +'<div class="rd-vote-col">'
+    +'<button class="rd-vote-btn" data-dir="up" title="Upvote">&#9650;</button>'
+    +'<span class="rd-vote-count" data-raw="'+upvotes+'">'+randK(upvotes)+'</span>'
+    +'<button class="rd-vote-btn" data-dir="down" title="Downvote">&#9660;</button>'
+    +'</div>'
+    +'<div class="rd-main">'
+    +'<div class="rd-meta">'
+    +'<span class="rd-sub">'+escH(sub)+'</span>'
+    +' &middot; Posted by u/'+escH(user)
+    +' &middot; '+escH(timeAgo)
+    +'</div>'
+    +'<div class="rd-title">'+escH(title)+'</div>'
+    +'<span class="rd-flair">'+escH(flair)+'</span>'
+    +'<div class="rd-text">'+rdHtml+'</div>'
+    +'<div class="rd-actions">'
+    +'<button class="rd-action" data-action="comments">&#128172; <span class="rd-comment-count" data-raw="'+commentCount+'">'+commentCount+'</span> Comments</button>'
+    +'<button class="rd-action" data-action="share">&#128257; Share</button>'
+    +'<button class="rd-action" data-action="save">&#11088; Save</button>'
+    +'<button class="rd-action" data-action="hide">&#128065; Hide</button>'
+    +'</div>'
+    +'<div class="rd-comment-composer">'
+    +'<textarea class="rd-cc-input" placeholder="What are your thoughts?"></textarea>'
+    +'<div class="rd-cc-actions">'
+    +'<button class="rd-cc-cancel">Cancel</button>'
+    +'<button class="rd-cc-post" disabled>Comment</button>'
+    +'</div>'
+    +'</div>'
+    +'<div style="margin-top:10px;border-top:1px solid #272729;padding-top:8px">'
+    +'<div style="font-size:.75rem;color:#818384;margin-bottom:6px;font-weight:700">Top Comments</div>'
+    +'<div class="rd-comment-list">'+commHtml+'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+
+  var plain=title+"\n\n"+redditBody;
+  return {platform:"reddit",intent:intent,transforms:wm.transforms,
+          structure:"Subreddit &#8594; Title &#8594; Context &#8594; Community ask",
+          html:html,plainText:plain};
+}
+
+/* ═══════════════════════════════════════
+   INTERACTION WIRING
+═══════════════════════════════════════ */
+function wireInteractions(el){
+  /* ─────────── LINKEDIN ─────────── */
+  var followBtn=el.querySelector(".li-follow-btn");
+  if(followBtn){
+    followBtn.addEventListener("click",function(){
+      var s=parseInt(this.dataset.state||"0");
+      if(s===0){this.textContent="Following";this.classList.add("following");this.dataset.state="1";showToast("You're now following");}
+      else{this.textContent="+ Follow";this.classList.remove("following");this.dataset.state="0";}
+    });
+  }
+
+  // LinkedIn main action bar
+  el.querySelectorAll(".li-action").forEach(function(a){
+    a.addEventListener("click",function(){
+      var act=this.dataset.action;
+      var card=this.closest(".li-card");
+      var section=card&&card.querySelector(".li-comments-section");
+      if(act==="like"){
+        var liked=this.classList.toggle("liked");
+        this.innerHTML=liked
+          ?'<span class="act-icon">&#128077;</span> Liked'
+          :'<span class="act-icon">&#128077;</span> Like';
+        var rc=card.querySelector(".li-react-count");
+        if(rc){var raw=parseInt(rc.dataset.raw,10);raw+=liked?1:-1;rc.dataset.raw=raw;rc.textContent=randK(raw);}
+      } else if(act==="comment"){
+        if(section){
+          section.classList.toggle("open");
+          if(section.classList.contains("open")){
+            var ta=section.querySelector(".li-comp-input");
+            if(ta) setTimeout(function(){ta.focus()},50);
+          }
+        }
+      } else if(act==="repost"){
+        var on=this.classList.toggle("active");
+        this.innerHTML=on
+          ?'<span class="act-icon">&#128260;</span> Reposted'
+          :'<span class="act-icon">&#128260;</span> Repost';
+        var rp=card.querySelector(".li-repost-count");
+        if(rp){var rraw=parseInt(rp.dataset.raw,10);rraw+=on?1:-1;rp.dataset.raw=rraw;rp.textContent=rraw;}
+        showToast(on?"Reposted to your feed":"Repost removed");
+      } else if(act==="send"){
+        showToast("Link copied to clipboard");
+      }
+    });
+  });
+
+  // LinkedIn comment composer enable/post
+  var liInput=el.querySelector(".li-comp-input");
+  var liPostBtn=el.querySelector(".li-comp-post");
+  if(liInput&&liPostBtn){
+    liInput.addEventListener("input",function(){
+      this.style.height="auto";this.style.height=Math.min(this.scrollHeight,140)+"px";
+      var has=this.value.trim().length>0;
+      liPostBtn.classList.toggle("active",has);
+      liPostBtn.disabled=!has;
+    });
+    liPostBtn.addEventListener("click",function(){
+      var txt=liInput.value.trim();
+      if(!txt) return;
+      var card=el.querySelector(".li-card");
+      var list=card.querySelector(".li-comment-list");
+      var node=document.createElement("div");
+      node.className="li-c";
+      node.innerHTML='<div class="li-c-avatar" style="background:#0a66c2">YO</div>'
+        +'<div class="li-c-body">'
+        +'<div style="display:flex;align-items:baseline;gap:6px"><span class="li-c-name">You</span><span class="li-c-meta">now</span></div>'
+        +'<div class="li-c-headline">Posting from the road</div>'
+        +'<div class="li-c-text"></div>'
+        +'<div class="li-c-actions">'
+        +'<button class="li-c-act" data-action="like" data-likes="0"><span class="act-icon">&#128077;</span> Like &middot; <span class="li-c-likes">0</span></button>'
+        +'<button class="li-c-act" data-action="reply">Reply</button>'
+        +'</div>'
+        +'</div>';
+      node.querySelector(".li-c-text").textContent=txt;
+      list.insertBefore(node,list.firstChild);
+      liInput.value="";liInput.style.height="auto";
+      liPostBtn.classList.remove("active");liPostBtn.disabled=true;
+      var cc=card.querySelector(".li-comment-count");
+      if(cc){var craw=parseInt(cc.dataset.raw,10)+1;cc.dataset.raw=craw;cc.textContent=craw;}
+      wireLiCommentActions(node);
+    });
+  }
+  wireLiCommentActions(el);
+
+  /* ─────────── DISCORD ─────────── */
+  // Existing reactions (inline emojis)
+  el.querySelectorAll(".dc-reaction").forEach(function(r){
+    r.addEventListener("click",function(){
+      var reacted=parseInt(this.dataset.reacted||"0");
+      var count=parseInt(this.dataset.count||"1");
+      if(reacted===0){this.dataset.count=count+1;this.dataset.reacted="1";this.classList.add("reacted");}
+      else{this.dataset.count=count-1;this.dataset.reacted="0";this.classList.remove("reacted");}
+      this.querySelector(".rc").textContent=this.dataset.count;
+    });
+  });
+
+  // Discord toolbar
+  var dcMsgBody=el.querySelector(".dc-msg-body");
+  var dcPicker=el.querySelector(".dc-emoji-picker");
+  var dcReplies=el.querySelector(".dc-replies");
+  var dcReplyRow=el.querySelector(".dc-reply-input-row");
+
+  el.querySelectorAll(".dc-tool").forEach(function(t){
+    t.addEventListener("click",function(){
+      var act=this.dataset.action;
+      if(act==="react"){
+        if(dcPicker){
+          dcPicker.classList.toggle("open");
+          this.classList.toggle("active",dcPicker.classList.contains("open"));
+        }
+      } else if(act==="reply"){
+        if(dcReplyRow){
+          dcReplyRow.classList.toggle("open");
+          this.classList.toggle("active",dcReplyRow.classList.contains("open"));
+          if(dcReplyRow.classList.contains("open")){
+            var inp=dcReplyRow.querySelector(".dc-reply-input");
+            if(inp) setTimeout(function(){inp.focus()},50);
+          }
+        }
+      } else if(act==="thread"){
+        if(dcReplies){
+          dcReplies.classList.toggle("open");
+          this.classList.toggle("active",dcReplies.classList.contains("open"));
+        }
+      } else if(act==="more"){
+        showToast(rand(["Pinned to channel","Marked as unread","Message link copied","Reported to moderators"]));
+      }
+    });
+  });
+
+  // Discord emoji picker — click adds a reaction
+  if(dcPicker){
+    dcPicker.querySelectorAll("button").forEach(function(b){
+      b.addEventListener("click",function(){
+        var emoji=this.dataset.emoji;
+        var row=el.querySelector(".dc-reactions-row");
+        if(!row) return;
+        // Already there?
+        var existing=null;
+        row.querySelectorAll(".dc-reaction").forEach(function(r){
+          if(r.firstChild&&r.firstChild.nodeValue&&r.firstChild.nodeValue.trim()===""){
+            // fallback: compare inner HTML start
+          }
+          if(r.innerHTML.indexOf(emoji)===0||r.innerHTML.trim().indexOf(emoji)===0){existing=r;}
+        });
+        if(existing){
+          existing.click();
+        } else {
+          var newR=document.createElement("div");
+          newR.className="dc-reaction reacted";
+          newR.dataset.count="1";newR.dataset.reacted="1";
+          newR.innerHTML=emoji+' <span class="rc">1</span>';
+          newR.addEventListener("click",function(){
+            var reacted=parseInt(this.dataset.reacted||"0");
+            var count=parseInt(this.dataset.count||"1");
+            if(reacted===0){this.dataset.count=count+1;this.dataset.reacted="1";this.classList.add("reacted");}
+            else{
+              if(count-1<=0){this.parentNode.removeChild(this);return;}
+              this.dataset.count=count-1;this.dataset.reacted="0";this.classList.remove("reacted");
+            }
+            this.querySelector(".rc").textContent=this.dataset.count;
+          });
+          row.appendChild(newR);
+        }
+        dcPicker.classList.remove("open");
+        var rb=el.querySelector(".dc-tool[data-action='react']");
+        if(rb) rb.classList.remove("active");
+      });
+    });
+  }
+
+  // Discord reply send
+  if(dcReplyRow){
+    var dcInp=dcReplyRow.querySelector(".dc-reply-input");
+    var dcSendBtn=dcReplyRow.querySelector(".dc-reply-send");
+    var dcSend=function(){
+      var v=dcInp.value.trim();
+      if(!v) return;
+      if(!dcReplies) return;
+      dcReplies.classList.add("open");
+      var newRow=document.createElement("div");
+      newRow.className="dc-reply-row";
+      var t=new Date();
+      var hh=t.getHours(),mm=t.getMinutes();
+      var ampm=hh>=12?"PM":"AM";var h12=hh%12||12;
+      var ts="Today at "+h12+":"+(mm<10?"0":"")+mm+" "+ampm;
+      newRow.innerHTML='<div class="dc-reply-avatar" style="background:#5865f2">YO</div>'
+        +'<div class="dc-reply-body">'
+        +'<div class="dc-reply-name-row">'
+        +'<span class="dc-reply-name" style="color:#5865f2">you</span>'
+        +'<span class="dc-reply-time">'+ts+'</span>'
+        +'</div>'
+        +'<div class="dc-reply-text"></div>'
+        +'</div>';
+      newRow.querySelector(".dc-reply-text").textContent=v;
+      dcReplies.appendChild(newRow);
+      dcInp.value="";
+      var threadBtn=el.querySelector(".dc-tool[data-action='thread']");
+      if(threadBtn) threadBtn.classList.add("active");
+    };
+    if(dcSendBtn) dcSendBtn.addEventListener("click",dcSend);
+    if(dcInp) dcInp.addEventListener("keydown",function(e){
+      if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();dcSend();}
+    });
+  }
+
+  /*Reddits surface level for post*/
+  el.querySelectorAll(".rd-vote-col .rd-vote-btn").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var dir=this.dataset.dir;
+      var col=this.closest(".rd-vote-col");
+      var countEl=col.querySelector(".rd-vote-count");
+      var up=col.querySelector("[data-dir='up']");
+      var dn=col.querySelector("[data-dir='down']");
+      var cur=parseInt(countEl.dataset.raw,10);
+      var state=parseInt(col.dataset.state||"0",10);
+      if(dir==="up"){
+        if(state===1){col.dataset.state="0";cur-=1;up.classList.remove("upvoted");}
+        else if(state===-1){col.dataset.state="1";cur+=2;up.classList.add("upvoted");dn.classList.remove("downvoted");}
+        else{col.dataset.state="1";cur+=1;up.classList.add("upvoted");}
+      } else {
+        if(state===-1){col.dataset.state="0";cur+=1;dn.classList.remove("downvoted");}
+        else if(state===1){col.dataset.state="-1";cur-=2;dn.classList.add("downvoted");up.classList.remove("upvoted");}
+        else{col.dataset.state="-1";cur-=1;dn.classList.add("downvoted");}
+      }
+      countEl.dataset.raw=cur;
+      countEl.textContent=randK(cur);
+    });
+  });
+
+  // Reddit post action bar
+  var rdComposer=el.querySelector(".rd-comment-composer");
+  el.querySelectorAll(".rd-action").forEach(function(a){
+    a.addEventListener("click",function(){
+      var act=this.dataset.action;
+      var btn=this;
+      if(act==="comments"){
+        if(rdComposer){
+          rdComposer.classList.toggle("open");
+          if(rdComposer.classList.contains("open")){
+            var ta=rdComposer.querySelector(".rd-cc-input");
+            if(ta) setTimeout(function(){ta.focus()},50);
+          }
+        }
+      } else if(act==="share"){
+        showToast("Link copied!");
+        btn.classList.add("active");setTimeout(function(){btn.classList.remove("active")},1000);
+      } else if(act==="save"){
+        var on=btn.classList.toggle("active-save");
+        btn.innerHTML=on?"&#11088; Saved":"&#11088; Save";
+        if(on) showToast("Saved to your profile");
+      } else if(act==="hide"){
+        var card=btn.closest(".rd-card");
+        var hidden=card.classList.toggle("hidden-post");
+        btn.innerHTML=hidden?"&#128065; Show":"&#128065; Hide";
+        if(hidden) showToast("Post hidden");
+      }
+    });
+  });
+
+  // Reddit composer post
+  if(rdComposer){
+    var rdIn=rdComposer.querySelector(".rd-cc-input");
+    var rdPost=rdComposer.querySelector(".rd-cc-post");
+    var rdCancel=rdComposer.querySelector(".rd-cc-cancel");
+    rdIn.addEventListener("input",function(){
+      var has=this.value.trim().length>0;
+      rdPost.classList.toggle("active",has);
+      rdPost.disabled=!has;
+    });
+    rdCancel.addEventListener("click",function(){
+      rdIn.value="";rdPost.classList.remove("active");rdPost.disabled=true;
+      rdComposer.classList.remove("open");
+    });
+    rdPost.addEventListener("click",function(){
+      var v=rdIn.value.trim();
+      if(!v) return;
+      var card=el.querySelector(".rd-card");
+      var list=card.querySelector(".rd-comment-list");
+      var node=document.createElement("div");
+      node.className="rd-c-row";
+      node.innerHTML='<div class="rd-c-meta">u/you &middot; just now</div>'
+        +'<div class="rd-c-text"></div>'
+        +'<div class="rd-c-bar">'
+        +'<div class="rd-c-vote">'
+        +'<button class="rd-c-vbtn" data-dir="up">&#9650;</button>'
+        +'<span class="rd-c-vcount" data-raw="1">1</span>'
+        +'<button class="rd-c-vbtn" data-dir="down">&#9660;</button>'
+        +'</div>'
+        +'<button class="rd-c-act" data-action="reply">Reply</button>'
+        +'<button class="rd-c-act" data-action="share">Share</button>'
+        +'</div>'
+        +'<div class="rd-c-reply-box">'
+        +'<textarea class="rd-c-reply-input" placeholder="What are your thoughts?"></textarea>'
+        +'<div class="rd-c-reply-actions">'
+        +'<button class="rd-c-reply-cancel">Cancel</button>'
+        +'<button class="rd-c-reply-post">Reply</button>'
+        +'</div>'
+        +'</div>'
+        +'<div class="rd-c-thread-list"></div>';
+      node.querySelector(".rd-c-text").textContent=v;
+      list.insertBefore(node,list.firstChild);
+      rdIn.value="";rdPost.classList.remove("active");rdPost.disabled=true;
+      rdComposer.classList.remove("open");
+      var cc=card.querySelector(".rd-comment-count");
+      if(cc){var craw=parseInt(cc.dataset.raw,10)+1;cc.dataset.raw=craw;cc.textContent=craw;}
+      wireRdCommentRow(node);
+    });
+  }
+
+  // Wire existing reddit comments
+  el.querySelectorAll(".rd-comment-list > .rd-c-row").forEach(function(row){wireRdCommentRow(row)});
+}
+
+/*Making the reply sub of the comments themselves*/
+function wireLiCommentActions(scope){
+  scope.querySelectorAll(".li-c .li-c-act").forEach(function(b){
+    if(b.dataset.bound) return; b.dataset.bound="1";
+    b.addEventListener("click",function(){
+      var act=this.dataset.action;
+      if(act==="like"){
+        var liked=this.classList.toggle("liked");
+        var base=parseInt(this.dataset.likes||"0",10);
+        var span=this.querySelector(".li-c-likes");
+        if(liked){base+=1;}else{base-=1;}
+        this.dataset.likes=base;
+        if(span) span.textContent=base;
+      } else if(act==="reply"){
+        showToast("Could not implement this feature in time");
+      }
+    });
+  });
+}
+
+function wireRdCommentRow(row){
+  // Upvotes and downvotes for Reddit
+  row.querySelectorAll(".rd-c-vote .rd-c-vbtn").forEach(function(btn){
+    if(btn.dataset.bound) return; btn.dataset.bound="1";
+    btn.addEventListener("click",function(){
+      var dir=this.dataset.dir;
+      var voteBox=this.closest(".rd-c-vote");
+      var countEl=voteBox.querySelector(".rd-c-vcount");
+      var up=voteBox.querySelector("[data-dir='up']");
+      var dn=voteBox.querySelector("[data-dir='down']");
+      var cur=parseInt(countEl.dataset.raw,10);
+      var state=parseInt(voteBox.dataset.state||"0",10);
+      if(dir==="up"){
+        if(state===1){voteBox.dataset.state="0";cur-=1;up.classList.remove("upvoted");}
+        else if(state===-1){voteBox.dataset.state="1";cur+=2;up.classList.add("upvoted");dn.classList.remove("downvoted");}
+        else{voteBox.dataset.state="1";cur+=1;up.classList.add("upvoted");}
+      } else {
+        if(state===-1){voteBox.dataset.state="0";cur+=1;dn.classList.remove("downvoted");}
+        else if(state===1){voteBox.dataset.state="-1";cur-=2;dn.classList.add("downvoted");up.classList.remove("upvoted");}
+        else{voteBox.dataset.state="-1";cur-=1;dn.classList.add("downvoted");}
+      }
+      countEl.dataset.raw=cur;
+      countEl.textContent=randK(cur);
+    });
+  });
+  // action buttons like such as likes and replies
+  row.querySelectorAll(".rd-c-bar > .rd-c-act").forEach(function(b){
+    if(b.dataset.bound) return; b.dataset.bound="1";
+    b.addEventListener("click",function(){
+      var act=this.dataset.action;
+      if(act==="reply"){
+        var box=row.querySelector(".rd-c-reply-box");
+        if(box){
+          box.classList.toggle("open");
+          if(box.classList.contains("open")){
+            var ta=box.querySelector(".rd-c-reply-input");
+            if(ta) setTimeout(function(){ta.focus()},50);
+          }
+        }
+      } else if(act==="award"){
+        showToast("Award given &#11088;");
+        this.classList.add("liked");
+      } else if(act==="share"){
+        showToast("Comment link copied");
+      }
+    });
+  });
+  // reply box send/cancel
+  var box=row.querySelector(".rd-c-reply-box");
+  if(box&&!box.dataset.bound){
+    box.dataset.bound="1";
+    var inp=box.querySelector(".rd-c-reply-input");
+    var post=box.querySelector(".rd-c-reply-post");
+    var cancel=box.querySelector(".rd-c-reply-cancel");
+    cancel.addEventListener("click",function(){inp.value="";box.classList.remove("open");});
+    post.addEventListener("click",function(){
+      var v=inp.value.trim();if(!v) return;
+      var threadList=row.querySelector(".rd-c-thread-list");
+      var thread=document.createElement("div");
+      thread.className="rd-c-thread";
+      thread.innerHTML='<div class="rd-c-thread-meta">u/you &middot; just now</div>'
+        +'<div class="rd-c-thread-text"></div>';
+      thread.querySelector(".rd-c-thread-text").textContent=v;
+      threadList.appendChild(thread);
+      inp.value="";box.classList.remove("open");
+    });
+  }
+}
+
+
+/*Making the platforms badge and adding interactivity*/
+var postStore={};
+
+function renderEntry(id,result){
+  var badgeLabels={linkedin:"&#128188; LinkedIn",discord:"&#127918; Discord",reddit:"&#128483; Reddit"};
+  var badgeLabel=badgeLabels[result.platform]||result.platform;
+  var badgeClass="badge-"+result.platform;
+
+  var el=document.createElement("div");
+  el.className="post-entry";
+  el.id=id;
+  el.innerHTML=
+    '<span class="platform-badge '+badgeClass+'">'+badgeLabel+'</span>'
+    +result.html
+    +'<div class="post-actions">'
+    +'<button class="post-btn copy-btn">&#128203; Copy</button>'
+    +'<button class="post-btn regen-btn">&#9851; Regenerate</button>'
+    +'</div>';
+
+  // Wire platform interactions
+  wireInteractions(el);
+
+  // Allows the user to copy the t
+  el.querySelector(".copy-btn").addEventListener("click",function(){
+    var data=postStore[id];
+    if(!data) return;
+    var btn=this;
+    var txt=data.plainText;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){
+        btn.textContent="Copied!";btn.classList.add("copied");
+        setTimeout(function(){btn.innerHTML="&#128203; Copy";btn.classList.remove("copied")},1800);
+      });
+    } else {
+      var ta=document.createElement("textarea");
+      ta.value=txt;document.body.appendChild(ta);ta.select();
+      document.execCommand("copy");document.body.removeChild(ta);
+      btn.textContent="Copied!";btn.classList.add("copied");
+      setTimeout(function(){btn.innerHTML="&#128203; Copy";btn.classList.remove("copied")},1800);
+    }
+  });
+
+  // Regenerates the output
+  el.querySelector(".regen-btn").addEventListener("click",function(){
+    var data=postStore[id];
+    if(!data) return;
+    el.style.opacity="0.3";el.style.transition="opacity .18s";
+    setTimeout(function(){
+      var nr=runTranslation(data.rawText,data.platform);
+      postStore[id]={rawText:data.rawText,platform:data.platform,plainText:nr.plainText};
+      var fresh=renderEntry(id,nr);
+      el.parentNode.replaceChild(fresh,el);
+    },200);
+  });
+
+  return el;
+}
+
+function runTranslation(text,platform){
+  if(platform==="linkedin") return buildLinkedIn(text);
+  if(platform==="discord")  return buildDiscord(text);
+  if(platform==="reddit")   return buildReddit(text);
+  return buildLinkedIn(text);
+}
+
+/*Moves the text from the translation into the feed*/
+function doTranslate(){
+  var text=document.getElementById("inputText").value.trim();
+  if(!text){
+    var ta=document.getElementById("inputText");
+    ta.style.borderColor="#e00055";
+    ta.style.boxShadow="0 0 0 3px rgba(220,0,85,.1)";
+    ta.focus();
+    setTimeout(function(){ta.style.borderColor="";ta.style.boxShadow=""},900);
+    return;
+  }
+  var platform=document.getElementById("toLang").value;
+
+  var empty=document.getElementById("emptyState");
+  if(empty) empty.parentNode.removeChild(empty);
+
+  var btn=document.getElementById("translateBtn");
+  btn.classList.add("loading");
+  btn.textContent="Translating...";
+
+  // Small fake delay for feel
+  setTimeout(function(){
+    var result=runTranslation(text,platform);
+    var id="post_"+Date.now();
+    postStore[id]={rawText:text,platform:platform,plainText:result.plainText};
+
+    var feed=document.getElementById("feed");
+    var entry=renderEntry(id,result);
+    feed.insertBefore(entry,feed.firstChild);
+
+    btn.classList.remove("loading");
+    btn.innerHTML="Translate &#10022;";
+  },180);
+}
+
+// Char counter
+document.getElementById("inputText").addEventListener("input",function(){
+  document.getElementById("charCount").textContent=this.value.length+" / 300";
+});
+
+// Keyboard shortcut
+document.getElementById("inputText").addEventListener("keydown",function(e){
+  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();doTranslate();}
+});
+
+document.getElementById("translateBtn").addEventListener("click",doTranslate);
+
+})();
+</script>
+</body>
+</html>
+  

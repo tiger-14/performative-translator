@@ -1,5 +1,5 @@
 # Performative Translator
-A web app that takes your input and translates it into the dramatic performative voice of LinkedIn, Discord, or Reddit, complete with fake likes, comments, upvotes, and replies. This was created in April 2026.
+A web app that takes your input and translates it into the dramatic performative voice of LinkedIn, Discord, or Reddit, complete with fake likes, comments, upvotes, and replies. This was built in April 2026.
 ## Try it
 - Open the file directly — see Quick Start below.
 ## Quick Start
